@@ -199,7 +199,6 @@ function Landing() {
       <footer className="border-t border-border bg-card">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-4 px-6 py-8 md:flex-row md:items-center">
           <div className="flex items-center gap-3">
-            <BcmLogo variant="mark" />
             <span className="text-xs uppercase tracking-wider text-muted-foreground">
               © {new Date().getFullYear()} Bossman Construction Management
             </span>

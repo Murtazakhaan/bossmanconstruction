@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/donations")({
+export const Route = createFileRoute("/_authenticated/donations/")({
   component: () => (
     <AppShell title="My Donations">
       <PageHeader

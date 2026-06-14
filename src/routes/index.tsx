@@ -33,6 +33,7 @@ function Landing() {
           <Link to="/" className="flex items-center gap-3">
             <BcmLogo variant="mark" />
           </Link>
+          <nav className="hidden items-center gap-8 text-sm font-medium uppercase tracking-wide text-muted-foreground md:flex">
             <a href="#how" className="hover:text-foreground">How it works</a>
             <a href="#who" className="hover:text-foreground">Who it's for</a>
             <a href="#impact" className="hover:text-foreground">Impact</a>
@@ -52,8 +53,8 @@ function Landing() {
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-border bg-concrete-texture">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/40" />
-        <div className="relative mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-5 md:py-28">
-          <div className="md:col-span-3">
+        <div className="relative mx-auto max-w-7xl px-6 py-20 md:py-28">
+          <div>
             <h1 className="font-display text-5xl font-bold uppercase leading-[0.95] tracking-tight text-primary md:text-7xl">
               Don't dump it.
               <br />
@@ -75,26 +76,6 @@ function Landing() {
                   I need materials
                 </Link>
               </Button>
-            </div>
-          </div>
-          <div className="md:col-span-2">
-            <div className="relative">
-              <div className="absolute -inset-1 rounded-sm bg-primary/30 blur-2xl" />
-              <div className="relative overflow-hidden rounded-sm border-4 border-primary bg-card p-2 shadow-2xl">
-                <BcmLogo className="h-full w-full" />
-              </div>
-              <div className="mt-6 grid grid-cols-3 gap-3 text-center">
-                {[
-                  { k: "Tons", v: "Less waste" },
-                  { k: "USD", v: "Saved by families" },
-                  { k: "Hours", v: "From offer to pickup" },
-                ].map((s) => (
-                  <div key={s.v} className="rounded-sm border border-border bg-card p-3">
-                    <div className="font-display text-xl font-bold uppercase text-primary">{s.k}</div>
-                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{s.v}</div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>

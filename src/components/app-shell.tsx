@@ -116,7 +116,7 @@ function SidebarContent() {
                 key={r}
                 className="rounded-sm bg-sidebar-accent px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-sidebar-accent-foreground"
               >
-                {r}
+                {r === "contractor" ? "Donor" : r}
               </span>
             ))}
           </div>

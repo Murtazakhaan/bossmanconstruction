@@ -65,8 +65,8 @@ function Dashboard() {
   return (
     <AppShell title="Dashboard">
       <PageHeader
-        eyebrow={isContractor ? "Contractor" : isRecipient ? "Recipient" : "Member"}
-        title={`Welcome back${user?.email ? ", " + user.email.split("@")[0] : ""}.`}
+        eyebrow={isContractor ? "Donor" : isRecipient ? "Recipient" : "Member"}
+        title={`Welcome back${displayName ? ", " + displayName : ""}.`}
         description="Here's a snapshot of your activity in BCM."
         actions={
           isContractor ? (

@@ -52,7 +52,7 @@ function MaterialsList() {
             <Package className="mb-3 h-10 w-10 text-concrete-dark" />
             <h3 className="font-display text-lg font-semibold uppercase">No materials yet</h3>
             <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-              Check back soon — new surplus is posted by contractors every week.
+              Check back soon - new surplus is posted by contractors every week.
             </p>
           </CardContent>
         </Card>

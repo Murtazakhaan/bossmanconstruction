@@ -21,7 +21,7 @@ export const Route = createFileRoute("/auth")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Sign in — Bossman Construction Management" },
+      { title: "Sign in - Bossman Construction Management" },
       { name: "description", content: "Sign in or create a free Bossman Construction Management account." },
     ],
   }),
@@ -52,7 +52,7 @@ function AuthPage() {
             Donate it. Don't dump it.
           </h2>
           <p className="mt-3 max-w-md text-primary-foreground/80">
-            Join the contractors and families closing the loop on construction waste — one pickup at a time.
+            Join the contractors and families closing the loop on construction waste - one pickup at a time.
           </p>
         </div>
         <div className="text-xs uppercase tracking-wider text-primary-foreground/60">

@@ -7,6 +7,8 @@ import {
   FileBarChart,
   Settings as SettingsIcon,
   ShieldCheck,
+  Users as UsersIcon,
+  Tag,
   LogOut,
   Menu,
 } from "lucide-react";
@@ -28,27 +30,42 @@ type Item = {
   roles?: ("contractor" | "recipient" | "admin")[];
 };
 
-const ITEMS: Item[] = [
+const USER_ITEMS: Item[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/materials", label: "Materials", icon: Package },
   { to: "/donations", label: "My Donations", icon: HandHeart, roles: ["contractor"] },
   { to: "/transactions", label: "Transactions", icon: ListChecks },
-  { to: "/reports", label: "Reports", icon: FileBarChart, roles: ["contractor", "admin"] },
-  { to: "/admin", label: "Admin", icon: ShieldCheck, roles: ["admin"] },
+  { to: "/reports", label: "Reports", icon: FileBarChart, roles: ["contractor"] },
   { to: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 
+const ADMIN_ITEMS: Item[] = [
+  { to: "/admin", label: "Dashboard", icon: ShieldCheck },
+  { to: "/admin/users", label: "Users", icon: UsersIcon },
+  { to: "/admin/materials", label: "Materials", icon: Package },
+  { to: "/admin/transactions", label: "Transactions", icon: ListChecks },
+  { to: "/admin/categories", label: "Categories", icon: Tag },
+  { to: "/admin/reports", label: "Reports", icon: FileBarChart },
+  { to: "/admin/settings", label: "Settings", icon: SettingsIcon },
+];
+
 // Primary destinations surfaced in the mobile bottom tab bar.
-const MOBILE_TAB_KEYS = ["/dashboard", "/materials", "/donations", "/transactions", "/settings"];
+const USER_MOBILE_TAB_KEYS = ["/dashboard", "/materials", "/donations", "/transactions", "/settings"];
+const ADMIN_MOBILE_TAB_KEYS = ["/admin", "/admin/users", "/admin/materials", "/admin/transactions", "/admin/settings"];
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const location = useLocation();
   const { roles } = useCurrentUser();
+  const isAdmin = roles.includes("admin");
+  const items = isAdmin ? ADMIN_ITEMS : USER_ITEMS;
   return (
     <nav className="flex flex-col gap-1 px-3">
-      {ITEMS.filter((i) => !i.roles || i.roles.some((r) => roles.includes(r))).map((item) => {
+      {items.filter((i) => !i.roles || i.roles.some((r) => roles.includes(r))).map((item) => {
         const Icon = item.icon;
-        const active = location.pathname === item.to || location.pathname.startsWith(item.to + "/");
+        const active =
+          item.to === "/admin"
+            ? location.pathname === "/admin" || location.pathname === "/admin/"
+            : location.pathname === item.to || location.pathname.startsWith(item.to + "/");
         return (
           <Link
             key={item.to}
@@ -128,8 +145,11 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const { roles } = useCurrentUser();
-  const mobileTabs = ITEMS.filter(
-    (i) => MOBILE_TAB_KEYS.includes(i.to) && (!i.roles || i.roles.some((r) => roles.includes(r))),
+  const isAdmin = roles.includes("admin");
+  const tabItems = isAdmin ? ADMIN_ITEMS : USER_ITEMS;
+  const tabKeys = isAdmin ? ADMIN_MOBILE_TAB_KEYS : USER_MOBILE_TAB_KEYS;
+  const mobileTabs = tabItems.filter(
+    (i) => tabKeys.includes(i.to) && (!i.roles || i.roles.some((r) => roles.includes(r))),
   );
   return (
     <div className="flex min-h-screen bg-background">

@@ -5,6 +5,7 @@ import {
   Package,
   ListChecks,
   Tag,
+  FileBarChart,
   Settings as SettingsIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
@@ -17,6 +18,7 @@ const TABS = [
   { to: "/admin/materials", label: "Materials", icon: Package },
   { to: "/admin/transactions", label: "Transactions", icon: ListChecks },
   { to: "/admin/categories", label: "Categories", icon: Tag },
+  { to: "/admin/reports", label: "Reports", icon: FileBarChart },
   { to: "/admin/settings", label: "Settings", icon: SettingsIcon },
 ];
 

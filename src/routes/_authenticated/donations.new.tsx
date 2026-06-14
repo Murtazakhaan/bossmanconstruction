@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
+import { MaterialPhotoUpload } from "@/components/material-photo-upload";
 
 export const Route = createFileRoute("/_authenticated/donations/new")({
   component: NewDonation,
@@ -21,6 +22,7 @@ function NewDonation() {
   const { user } = useCurrentUser();
   const [cats, setCats] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
+  const [photos, setPhotos] = useState<string[]>([]);
   const [form, setForm] = useState<any>({
     title: "", description: "", category_id: undefined as string | undefined, quantity: 1, unit: "units",
     unit_value_usd: 0, pickup_address: "", pickup_city: "", pickup_state: "", pickup_zip: "",
@@ -43,6 +45,7 @@ function NewDonation() {
       available_from: form.available_from || null,
       available_until: form.available_until || null,
       category_id: form.category_id || null,
+      photo_urls: photos,
     };
     const { error } = await supabase.from("materials").insert(payload);
     setSaving(false);
@@ -84,6 +87,10 @@ function NewDonation() {
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5"><Label>Available from</Label><Input type="date" {...f("available_from")} /></div>
               <div className="space-y-1.5"><Label>Available until</Label><Input type="date" {...f("available_until")} /></div>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Photos</Label>
+              {user ? <MaterialPhotoUpload userId={user.id} value={photos} onChange={setPhotos} /> : null}
             </div>
             <Button type="submit" disabled={saving}>{saving ? "Posting…" : "Post donation"}</Button>
           </form>

@@ -38,6 +38,7 @@ import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin.reports'
 import { Route as AuthenticatedAdminMaterialsRouteImport } from './routes/_authenticated/admin.materials'
 import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
+import { Route as AuthenticatedMaterialsIdIndexRouteImport } from './routes/_authenticated/materials.$id.index'
 import { Route as AuthenticatedMaterialsIdEditRouteImport } from './routes/_authenticated/materials.$id.edit'
 
 const AuthRoute = AuthRouteImport.update({
@@ -202,6 +203,12 @@ const AuthenticatedAdminCategoriesRoute =
     path: '/categories',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedMaterialsIdIndexRoute =
+  AuthenticatedMaterialsIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedMaterialsIdRoute,
+  } as any)
 const AuthenticatedMaterialsIdEditRoute =
   AuthenticatedMaterialsIdEditRouteImport.update({
     id: '/edit',
@@ -239,6 +246,7 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/transactions/': typeof AuthenticatedTransactionsIndexRoute
   '/materials/$id/edit': typeof AuthenticatedMaterialsIdEditRoute
+  '/materials/$id/': typeof AuthenticatedMaterialsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -254,7 +262,6 @@ export interface FileRoutesByTo {
   '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
-  '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/settings/about': typeof AuthenticatedSettingsAboutRoute
   '/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/settings/contact': typeof AuthenticatedSettingsContactRoute
@@ -268,6 +275,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/transactions': typeof AuthenticatedTransactionsIndexRoute
   '/materials/$id/edit': typeof AuthenticatedMaterialsIdEditRoute
+  '/materials/$id': typeof AuthenticatedMaterialsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -301,6 +309,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/transactions/': typeof AuthenticatedTransactionsIndexRoute
   '/_authenticated/materials/$id/edit': typeof AuthenticatedMaterialsIdEditRoute
+  '/_authenticated/materials/$id/': typeof AuthenticatedMaterialsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -334,6 +343,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/transactions/'
     | '/materials/$id/edit'
+    | '/materials/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -349,7 +359,6 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/users'
     | '/donations/new'
-    | '/materials/$id'
     | '/settings/about'
     | '/settings/change-password'
     | '/settings/contact'
@@ -363,6 +372,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/transactions'
     | '/materials/$id/edit'
+    | '/materials/$id'
   id:
     | '__root__'
     | '/'
@@ -395,6 +405,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/'
     | '/_authenticated/transactions/'
     | '/_authenticated/materials/$id/edit'
+    | '/_authenticated/materials/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -609,6 +620,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/materials/$id/': {
+      id: '/_authenticated/materials/$id/'
+      path: '/'
+      fullPath: '/materials/$id/'
+      preLoaderRoute: typeof AuthenticatedMaterialsIdIndexRouteImport
+      parentRoute: typeof AuthenticatedMaterialsIdRoute
+    }
     '/_authenticated/materials/$id/edit': {
       id: '/_authenticated/materials/$id/edit'
       path: '/edit'
@@ -671,11 +689,13 @@ const AuthenticatedSettingsRouteWithChildren =
 
 interface AuthenticatedMaterialsIdRouteChildren {
   AuthenticatedMaterialsIdEditRoute: typeof AuthenticatedMaterialsIdEditRoute
+  AuthenticatedMaterialsIdIndexRoute: typeof AuthenticatedMaterialsIdIndexRoute
 }
 
 const AuthenticatedMaterialsIdRouteChildren: AuthenticatedMaterialsIdRouteChildren =
   {
     AuthenticatedMaterialsIdEditRoute: AuthenticatedMaterialsIdEditRoute,
+    AuthenticatedMaterialsIdIndexRoute: AuthenticatedMaterialsIdIndexRoute,
   }
 
 const AuthenticatedMaterialsIdRouteWithChildren =

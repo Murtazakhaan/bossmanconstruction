@@ -44,28 +44,21 @@ function AuthPage() {
           <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" /> Back
           </Link>
-          <BcmLogo variant="mark" />
         </div>
 
-        <div className="mt-8 sm:mt-10">
-          <h1 className="font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">
-            {tab === "signin" ? "Welcome back" : "Let's get started"}
+        <div className="mt-6 flex justify-center">
+          <BcmLogo variant="full" className="h-24 w-auto sm:h-28" />
+        </div>
+
+        <div className="mt-8">
+          <h1 className="text-2xl font-bold tracking-tight">
+            {tab === "signin" ? "Sign In" : "Sign Up"}
           </h1>
-          <p className="mt-2 text-[15px] text-muted-foreground">
-            {tab === "signin"
-              ? "Sign in to manage your donations and pickups."
-              : "Create your free account in under a minute."}
-          </p>
-        </div>
-
-        <div className="mt-6 space-y-3">
-          <GoogleButton />
-          <div className="relative py-1 text-center">
-            <span className="relative z-10 bg-background px-3 text-xs uppercase tracking-wider text-muted-foreground">
-              or with email
-            </span>
-            <div className="absolute inset-x-0 top-1/2 h-px bg-border" />
-          </div>
+          {tab === "signup" && (
+            <p className="mt-1 text-[15px] text-muted-foreground">
+              Who are you signing up as? Select your role to continue.
+            </p>
+          )}
         </div>
 
         {tab === "signin" ? (
@@ -73,6 +66,16 @@ function AuthPage() {
         ) : (
           <SignUpForm defaultRole={role ?? "contractor"} onSwitch={() => setTab("signin")} />
         )}
+
+        <div className="mt-6 flex items-center justify-center gap-4">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-xs uppercase tracking-wider text-muted-foreground">Or continue with</span>
+          <div className="h-px flex-1 bg-border" />
+        </div>
+
+        <div className="mt-4 flex justify-center">
+          <GoogleIconButton />
+        </div>
 
         <p className="mt-auto pt-8 text-center text-[11px] text-muted-foreground">
           By continuing you agree to our Terms and Privacy Policy.

@@ -33,7 +33,7 @@ type Row = {
 
 function SettingsIndex() {
   const { user } = useCurrentUser();
-  const [profile, setProfile] = useState<{ full_name?: string; org_name?: string; phone?: string } | null>(null);
+  const [profile, setProfile] = useState<{ full_name?: string | null; org_name?: string | null; phone?: string | null } | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 

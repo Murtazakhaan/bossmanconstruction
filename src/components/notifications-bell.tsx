@@ -156,7 +156,8 @@ export function NotificationsBell() {
                           e.preventDefault();
                           markOneRead(n.id);
                           setOpen(false);
-                          navigate({ to: n.link as string });
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          navigate({ to: n.link as any });
                         }}
                         className="block"
                       >

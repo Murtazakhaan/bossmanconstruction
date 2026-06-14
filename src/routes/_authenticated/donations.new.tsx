@@ -22,7 +22,7 @@ function NewDonation() {
   const [cats, setCats] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<any>({
-    title: "", description: "", category_id: "", quantity: 1, unit: "units",
+    title: "", description: "", category_id: undefined as string | undefined, quantity: 1, unit: "units",
     unit_value_usd: 0, pickup_address: "", pickup_city: "", pickup_state: "", pickup_zip: "",
     available_from: "", available_until: "",
   });
@@ -64,7 +64,7 @@ function NewDonation() {
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-1.5"><Label>Title</Label><Input required placeholder="e.g. 12 sheets of 1/2” drywall" {...f("title")} /></div>
             <div className="space-y-1.5"><Label>Category</Label>
-              <Select value={form.category_id} onValueChange={(v) => setForm({ ...form, category_id: v })}>
+              <Select value={form.category_id ?? undefined} onValueChange={(v) => setForm({ ...form, category_id: v })}>
                 <SelectTrigger><SelectValue placeholder="Choose a category" /></SelectTrigger>
                 <SelectContent>{cats.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
               </Select>

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/status-badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { MaterialThumb } from "@/components/material-thumb";
 
 export const Route = createFileRoute("/_authenticated/materials/")({
   component: MaterialsList,
@@ -20,7 +21,7 @@ function MaterialsList() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("materials")
-        .select("id, title, description, quantity, unit, total_value_usd, pickup_city, pickup_state, status, created_at, category_id, material_categories(name)")
+        .select("id, title, description, quantity, unit, total_value_usd, pickup_city, pickup_state, status, created_at, category_id, photo_urls, material_categories(name)")
         .eq("status", "available")
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -62,6 +63,9 @@ function MaterialsList() {
             <Link key={m.id} to="/materials/$id" params={{ id: m.id }} className="group">
               <Card className="h-full transition-colors group-hover:border-primary">
                 <CardContent className="p-5">
+                  <div className="mb-4">
+                    <MaterialThumb paths={m.photo_urls} alt={m.title} />
+                  </div>
                   <div className="mb-3 flex items-center justify-between">
                     <span className="text-[11px] font-semibold uppercase tracking-wider text-concrete-dark">
                       {m.material_categories?.name ?? "Other"}

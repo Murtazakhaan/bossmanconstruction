@@ -73,11 +73,7 @@ function MaterialsPage() {
                     onConfirm={() => del.mutate(m.id)}
                     title="Delete this material?"
                     description="This cannot be undone."
-                  >
-                    <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10">
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </ConfirmDelete>
+                  />
                 </div>
               </CardContent>
             </Card>

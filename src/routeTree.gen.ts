@@ -22,6 +22,7 @@ import { Route as AuthenticatedTransactionsIndexRouteImport } from './routes/_au
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings.index'
 import { Route as AuthenticatedMaterialsIndexRouteImport } from './routes/_authenticated/materials.index'
 import { Route as AuthenticatedDonationsIndexRouteImport } from './routes/_authenticated/donations.index'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedTransactionsIdRouteImport } from './routes/_authenticated/transactions.$id'
 import { Route as AuthenticatedSettingsSecurityRouteImport } from './routes/_authenticated/settings.security'
 import { Route as AuthenticatedSettingsFavoritesRouteImport } from './routes/_authenticated/settings.favorites'
@@ -101,6 +102,11 @@ const AuthenticatedDonationsIndexRoute =
     path: '/donations/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedTransactionsIdRoute =
   AuthenticatedTransactionsIdRouteImport.update({
     id: '/transactions/$id',
@@ -166,7 +172,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin-login': typeof AdminLoginRoute
   '/auth': typeof AuthRoute
-  '/admin': typeof AuthenticatedAdminRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
@@ -180,6 +186,7 @@ export interface FileRoutesByFullPath {
   '/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/donations/': typeof AuthenticatedDonationsIndexRoute
   '/materials/': typeof AuthenticatedMaterialsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -190,7 +197,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin-login': typeof AdminLoginRoute
   '/auth': typeof AuthRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
@@ -203,6 +209,7 @@ export interface FileRoutesByTo {
   '/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/donations': typeof AuthenticatedDonationsIndexRoute
   '/materials': typeof AuthenticatedMaterialsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
@@ -215,7 +222,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/admin-login': typeof AdminLoginRoute
   '/auth': typeof AuthRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
@@ -229,6 +236,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
   '/_authenticated/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/_authenticated/transactions/$id': typeof AuthenticatedTransactionsIdRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/donations/': typeof AuthenticatedDonationsIndexRoute
   '/_authenticated/materials/': typeof AuthenticatedMaterialsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -255,6 +263,7 @@ export interface FileRouteTypes {
     | '/settings/favorites'
     | '/settings/security'
     | '/transactions/$id'
+    | '/admin/'
     | '/donations/'
     | '/materials/'
     | '/settings/'
@@ -265,7 +274,6 @@ export interface FileRouteTypes {
     | '/'
     | '/admin-login'
     | '/auth'
-    | '/admin'
     | '/dashboard'
     | '/profile'
     | '/reports'
@@ -278,6 +286,7 @@ export interface FileRouteTypes {
     | '/settings/favorites'
     | '/settings/security'
     | '/transactions/$id'
+    | '/admin'
     | '/donations'
     | '/materials'
     | '/settings'
@@ -303,6 +312,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/favorites'
     | '/_authenticated/settings/security'
     | '/_authenticated/transactions/$id'
+    | '/_authenticated/admin/'
     | '/_authenticated/donations/'
     | '/_authenticated/materials/'
     | '/_authenticated/settings/'
@@ -410,6 +420,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDonationsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/transactions/$id': {
       id: '/_authenticated/transactions/$id'
       path: '/transactions/$id'
@@ -483,6 +500,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedSettingsRouteChildren {
   AuthenticatedSettingsAboutRoute: typeof AuthenticatedSettingsAboutRoute
   AuthenticatedSettingsChangePasswordRoute: typeof AuthenticatedSettingsChangePasswordRoute
@@ -525,7 +553,7 @@ const AuthenticatedMaterialsIdRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
@@ -539,7 +567,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,

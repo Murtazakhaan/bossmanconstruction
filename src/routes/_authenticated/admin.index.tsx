@@ -29,7 +29,7 @@ function AdminDashboard() {
         supabase
           .from("transactions")
           .select("id", { count: "exact", head: true })
-          .eq("status", "pending"),
+          .eq("status", "requested"),
       ]);
       return {
         users: users.count ?? 0,
@@ -58,7 +58,7 @@ function AdminDashboard() {
           value={isLoading ? "—" : data!.transactions}
           icon={ListChecks}
           to="/admin/transactions"
-          hint={data?.pending ? `${data.pending} pending` : undefined}
+          hint={data?.pending ? `${data.pending} open` : undefined}
         />
         <StatCard label="Categories" value={isLoading ? "—" : data!.categories} icon={Tag} to="/admin/categories" />
       </div>

@@ -33,6 +33,7 @@ import { Route as AuthenticatedSettingsAboutRouteImport } from './routes/_authen
 import { Route as AuthenticatedMaterialsIdRouteImport } from './routes/_authenticated/materials.$id'
 import { Route as AuthenticatedDonationsNewRouteImport } from './routes/_authenticated/donations.new'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
+import { Route as AuthenticatedAdminTransactionsRouteImport } from './routes/_authenticated/admin.transactions'
 import { Route as AuthenticatedAdminMaterialsRouteImport } from './routes/_authenticated/admin.materials'
 import { Route as AuthenticatedMaterialsIdEditRouteImport } from './routes/_authenticated/materials.$id.edit'
 
@@ -168,6 +169,12 @@ const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminTransactionsRoute =
+  AuthenticatedAdminTransactionsRouteImport.update({
+    id: '/transactions',
+    path: '/transactions',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminMaterialsRoute =
   AuthenticatedAdminMaterialsRouteImport.update({
     id: '/materials',
@@ -191,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/admin/materials': typeof AuthenticatedAdminMaterialsRoute
+  '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
@@ -216,6 +224,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/admin/materials': typeof AuthenticatedAdminMaterialsRoute
+  '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
@@ -245,6 +254,7 @@ export interface FileRoutesById {
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/_authenticated/admin/materials': typeof AuthenticatedAdminMaterialsRoute
+  '/_authenticated/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/donations/new': typeof AuthenticatedDonationsNewRoute
   '/_authenticated/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
@@ -274,6 +284,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/admin/materials'
+    | '/admin/transactions'
     | '/admin/users'
     | '/donations/new'
     | '/materials/$id'
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reports'
     | '/admin/materials'
+    | '/admin/transactions'
     | '/admin/users'
     | '/donations/new'
     | '/materials/$id'
@@ -327,6 +339,7 @@ export interface FileRouteTypes {
     | '/_authenticated/reports'
     | '/_authenticated/settings'
     | '/_authenticated/admin/materials'
+    | '/_authenticated/admin/transactions'
     | '/_authenticated/admin/users'
     | '/_authenticated/donations/new'
     | '/_authenticated/materials/$id'
@@ -522,6 +535,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/transactions': {
+      id: '/_authenticated/admin/transactions'
+      path: '/transactions'
+      fullPath: '/admin/transactions'
+      preLoaderRoute: typeof AuthenticatedAdminTransactionsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/materials': {
       id: '/_authenticated/admin/materials'
       path: '/materials'
@@ -541,12 +561,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminMaterialsRoute: typeof AuthenticatedAdminMaterialsRoute
+  AuthenticatedAdminTransactionsRoute: typeof AuthenticatedAdminTransactionsRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminMaterialsRoute: AuthenticatedAdminMaterialsRoute,
+  AuthenticatedAdminTransactionsRoute: AuthenticatedAdminTransactionsRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }

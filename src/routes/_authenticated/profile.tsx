@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
@@ -16,9 +17,11 @@ export const Route = createFileRoute("/_authenticated/profile")({
 });
 
 function ProfilePage() {
-  const { user } = useCurrentUser();
+  const { user, roles } = useCurrentUser();
   const [p, setP] = useState<any>({});
   const [saving, setSaving] = useState(false);
+  const isContractor = roles.includes("contractor");
+  const isRecipient = roles.includes("recipient");
 
   useEffect(() => {
     if (!user) return;
@@ -60,6 +63,58 @@ function ProfilePage() {
             <div className="space-y-1.5"><Label>State</Label><Input {...f("state")} placeholder="e.g. TX" /></div>
           </div>
           <div className="space-y-1.5"><Label>Bio / about</Label><Textarea {...f("bio")} rows={3} /></div>
+          {isContractor && (
+            <div className="space-y-3 rounded-md border p-3">
+              <div className="text-sm font-medium">Donor details</div>
+              <div className="space-y-1.5">
+                <Label>Who's donating?</Label>
+                <Select
+                  value={p.donor_type ?? undefined}
+                  onValueChange={(v) => setP({ ...p, donor_type: v, ...(v !== "other" ? { donor_type_other: "" } : {}) })}
+                >
+                  <SelectTrigger><SelectValue placeholder="Select donor type" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="contractor">Contractor</SelectItem>
+                    <SelectItem value="homeowner">Homeowner</SelectItem>
+                    <SelectItem value="community_org">Community Organization</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {p.donor_type === "other" && (
+                <div className="space-y-1.5">
+                  <Label>Please specify</Label>
+                  <Input {...f("donor_type_other")} placeholder="Describe who's donating" />
+                </div>
+              )}
+            </div>
+          )}
+          {isRecipient && (
+            <div className="space-y-3 rounded-md border p-3">
+              <div className="text-sm font-medium">Recipient details</div>
+              <div className="space-y-1.5">
+                <Label>Type of recipient</Label>
+                <Select
+                  value={p.recipient_type ?? undefined}
+                  onValueChange={(v) => setP({ ...p, recipient_type: v, ...(v !== "other" ? { recipient_type_other: "" } : {}) })}
+                >
+                  <SelectTrigger><SelectValue placeholder="Select recipient type" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="individual_homeowner">Individual Homeowner</SelectItem>
+                    <SelectItem value="community_org">Community Organization</SelectItem>
+                    <SelectItem value="contractor">Contractor</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {p.recipient_type === "other" && (
+                <div className="space-y-1.5">
+                  <Label>Please specify</Label>
+                  <Input {...f("recipient_type_other")} placeholder="Describe recipient type" />
+                </div>
+              )}
+            </div>
+          )}
           <Button onClick={save} disabled={saving}>{saving ? "Saving…" : "Save profile"}</Button>
         </CardContent>
       </Card>

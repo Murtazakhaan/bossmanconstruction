@@ -30,7 +30,6 @@ import { Route as AuthenticatedSettingsDeleteAccountRouteImport } from './routes
 import { Route as AuthenticatedSettingsContactRouteImport } from './routes/_authenticated/settings.contact'
 import { Route as AuthenticatedSettingsChangePasswordRouteImport } from './routes/_authenticated/settings.change-password'
 import { Route as AuthenticatedSettingsAboutRouteImport } from './routes/_authenticated/settings.about'
-import { Route as AuthenticatedMaterialsIdRouteImport } from './routes/_authenticated/materials.$id'
 import { Route as AuthenticatedDonationsNewRouteImport } from './routes/_authenticated/donations.new'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedAdminTransactionsRouteImport } from './routes/_authenticated/admin.transactions'
@@ -155,12 +154,6 @@ const AuthenticatedSettingsAboutRoute =
     path: '/about',
     getParentRoute: () => AuthenticatedSettingsRoute,
   } as any)
-const AuthenticatedMaterialsIdRoute =
-  AuthenticatedMaterialsIdRouteImport.update({
-    id: '/materials/$id',
-    path: '/materials/$id',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedDonationsNewRoute =
   AuthenticatedDonationsNewRouteImport.update({
     id: '/donations/new',
@@ -204,9 +197,9 @@ const AuthenticatedAdminCategoriesRoute =
   } as any)
 const AuthenticatedMaterialsIdEditRoute =
   AuthenticatedMaterialsIdEditRouteImport.update({
-    id: '/edit',
-    path: '/edit',
-    getParentRoute: () => AuthenticatedMaterialsIdRoute,
+    id: '/materials/$id/edit',
+    path: '/materials/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -225,7 +218,6 @@ export interface FileRoutesByFullPath {
   '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
-  '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/settings/about': typeof AuthenticatedSettingsAboutRoute
   '/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/settings/contact': typeof AuthenticatedSettingsContactRoute
@@ -254,7 +246,6 @@ export interface FileRoutesByTo {
   '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
-  '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/settings/about': typeof AuthenticatedSettingsAboutRoute
   '/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/settings/contact': typeof AuthenticatedSettingsContactRoute
@@ -287,7 +278,6 @@ export interface FileRoutesById {
   '/_authenticated/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/donations/new': typeof AuthenticatedDonationsNewRoute
-  '/_authenticated/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/_authenticated/settings/about': typeof AuthenticatedSettingsAboutRoute
   '/_authenticated/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/_authenticated/settings/contact': typeof AuthenticatedSettingsContactRoute
@@ -320,7 +310,6 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/users'
     | '/donations/new'
-    | '/materials/$id'
     | '/settings/about'
     | '/settings/change-password'
     | '/settings/contact'
@@ -349,7 +338,6 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/users'
     | '/donations/new'
-    | '/materials/$id'
     | '/settings/about'
     | '/settings/change-password'
     | '/settings/contact'
@@ -381,7 +369,6 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/transactions'
     | '/_authenticated/admin/users'
     | '/_authenticated/donations/new'
-    | '/_authenticated/materials/$id'
     | '/_authenticated/settings/about'
     | '/_authenticated/settings/change-password'
     | '/_authenticated/settings/contact'
@@ -553,13 +540,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsAboutRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
     }
-    '/_authenticated/materials/$id': {
-      id: '/_authenticated/materials/$id'
-      path: '/materials/$id'
-      fullPath: '/materials/$id'
-      preLoaderRoute: typeof AuthenticatedMaterialsIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/donations/new': {
       id: '/_authenticated/donations/new'
       path: '/donations/new'
@@ -611,10 +591,10 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/materials/$id/edit': {
       id: '/_authenticated/materials/$id/edit'
-      path: '/edit'
+      path: '/materials/$id/edit'
       fullPath: '/materials/$id/edit'
       preLoaderRoute: typeof AuthenticatedMaterialsIdEditRouteImport
-      parentRoute: typeof AuthenticatedMaterialsIdRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
@@ -669,20 +649,6 @@ const AuthenticatedSettingsRouteWithChildren =
     AuthenticatedSettingsRouteChildren,
   )
 
-interface AuthenticatedMaterialsIdRouteChildren {
-  AuthenticatedMaterialsIdEditRoute: typeof AuthenticatedMaterialsIdEditRoute
-}
-
-const AuthenticatedMaterialsIdRouteChildren: AuthenticatedMaterialsIdRouteChildren =
-  {
-    AuthenticatedMaterialsIdEditRoute: AuthenticatedMaterialsIdEditRoute,
-  }
-
-const AuthenticatedMaterialsIdRouteWithChildren =
-  AuthenticatedMaterialsIdRoute._addFileChildren(
-    AuthenticatedMaterialsIdRouteChildren,
-  )
-
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -690,11 +656,11 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
   AuthenticatedDonationsNewRoute: typeof AuthenticatedDonationsNewRoute
-  AuthenticatedMaterialsIdRoute: typeof AuthenticatedMaterialsIdRouteWithChildren
   AuthenticatedTransactionsIdRoute: typeof AuthenticatedTransactionsIdRoute
   AuthenticatedDonationsIndexRoute: typeof AuthenticatedDonationsIndexRoute
   AuthenticatedMaterialsIndexRoute: typeof AuthenticatedMaterialsIndexRoute
   AuthenticatedTransactionsIndexRoute: typeof AuthenticatedTransactionsIndexRoute
+  AuthenticatedMaterialsIdEditRoute: typeof AuthenticatedMaterialsIdEditRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -704,11 +670,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
   AuthenticatedDonationsNewRoute: AuthenticatedDonationsNewRoute,
-  AuthenticatedMaterialsIdRoute: AuthenticatedMaterialsIdRouteWithChildren,
   AuthenticatedTransactionsIdRoute: AuthenticatedTransactionsIdRoute,
   AuthenticatedDonationsIndexRoute: AuthenticatedDonationsIndexRoute,
   AuthenticatedMaterialsIndexRoute: AuthenticatedMaterialsIndexRoute,
   AuthenticatedTransactionsIndexRoute: AuthenticatedTransactionsIndexRoute,
+  AuthenticatedMaterialsIdEditRoute: AuthenticatedMaterialsIdEditRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

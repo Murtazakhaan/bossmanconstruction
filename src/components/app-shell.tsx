@@ -38,6 +38,9 @@ const ITEMS: Item[] = [
   { to: "/profile", label: "Profile", icon: UserCircle },
 ];
 
+// Primary destinations surfaced in the mobile bottom tab bar.
+const MOBILE_TAB_KEYS = ["/dashboard", "/materials", "/donations", "/transactions", "/profile"];
+
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const location = useLocation();
   const { roles } = useCurrentUser();
@@ -123,13 +126,18 @@ function SidebarContent() {
 
 export function AppShell({ children, title }: { children: ReactNode; title?: string }) {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const { roles } = useCurrentUser();
+  const mobileTabs = ITEMS.filter(
+    (i) => MOBILE_TAB_KEYS.includes(i.to) && (!i.roles || i.roles.some((r) => roles.includes(r))),
+  );
   return (
     <div className="flex min-h-screen bg-background">
       <aside className="hidden w-64 shrink-0 border-r border-sidebar-border md:block">
         <SidebarContent />
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-border bg-card px-4 py-3 md:px-8">
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/95 px-4 py-3 backdrop-blur md:static md:px-8">
           <div className="flex items-center gap-3">
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
@@ -142,14 +150,41 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
               </SheetContent>
             </Sheet>
             {title ? (
-              <h1 className="font-display text-xl font-semibold uppercase tracking-wide text-foreground">
+              <h1 className="truncate font-display text-base font-semibold uppercase tracking-wide text-foreground sm:text-xl">
                 {title}
               </h1>
             ) : null}
           </div>
           <ThemeToggle />
         </header>
-        <main className="flex-1 px-4 py-6 md:px-8 md:py-8">{children}</main>
+        <main className="flex-1 px-4 py-5 pb-24 md:px-8 md:py-8 md:pb-8">{children}</main>
+        <nav
+          aria-label="Primary"
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur md:hidden"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        >
+          <ul className="mx-auto flex max-w-md items-stretch justify-around">
+            {mobileTabs.map((item) => {
+              const Icon = item.icon;
+              const active =
+                location.pathname === item.to || location.pathname.startsWith(item.to + "/");
+              return (
+                <li key={item.to} className="flex-1">
+                  <Link
+                    to={item.to}
+                    className={cn(
+                      "flex flex-col items-center gap-1 px-2 py-2.5 text-[10px] font-semibold uppercase tracking-wider transition-colors",
+                      active ? "text-primary" : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span className="leading-none">{item.label.split(" ")[0]}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
       </div>
     </div>
   );

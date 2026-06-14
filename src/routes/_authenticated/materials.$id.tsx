@@ -81,9 +81,9 @@ function MaterialDetail() {
           </div>
         }
       />
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-3 md:gap-6">
         <Card className="md:col-span-2">
-          <CardContent className="space-y-4 p-6">
+          <CardContent className="space-y-4 p-4 sm:p-6">
             {photoUrls.length ? (
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {photoUrls.map((url, i) => (
@@ -108,7 +108,7 @@ function MaterialDetail() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <h3 className="font-display text-sm font-semibold uppercase tracking-wider">Donor</h3>
             <div className="mt-1 text-sm">{(m as any).profiles?.org_name || (m as any).profiles?.full_name || "Contractor"}</div>
 

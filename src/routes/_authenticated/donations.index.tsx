@@ -45,9 +45,14 @@ function DonationsPage() {
   });
 
   async function handleDelete(id: string) {
-    const { error } = await supabase.from("materials").delete().eq("id", id);
+    if (!user) return;
+    const { data, error } = await supabase.from("materials").delete().eq("id", id).eq("contractor_id", user.id).select("id");
     if (error) {
       toast.error(error.message);
+      return;
+    }
+    if (!data?.length) {
+      toast.error("You can only delete your own donations.");
       return;
     }
     toast.success("Donation deleted");

@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/_authenticated/materials/$id/edit")({
 function EditMaterial() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
+  const qc = useQueryClient();
   const { user } = useCurrentUser();
   const [cats, setCats] = useState<any[]>([]);
   const [photos, setPhotos] = useState<string[]>([]);
@@ -68,7 +70,7 @@ function EditMaterial() {
     e.preventDefault();
     if (!user || !form) return;
     setSaving(true);
-    const { error } = await supabase.from("materials").update({
+    const { data, error } = await supabase.from("materials").update({
       title: form.title,
       description: form.description,
       category_id: form.category_id || null,
@@ -83,18 +85,27 @@ function EditMaterial() {
       available_until: form.available_until || null,
       status: form.status,
       photo_urls: photos,
-    }).eq("id", id);
+    }).eq("id", id).eq("contractor_id", user.id).select("id");
     setSaving(false);
     if (error) { toast.error(error.message); return; }
+    if (!data?.length) { toast.error("You can only edit your own donations."); return; }
+    qc.invalidateQueries({ queryKey: ["material", id] });
+    qc.invalidateQueries({ queryKey: ["my-donations", user.id] });
+    qc.invalidateQueries({ queryKey: ["materials", "available"] });
     toast.success("Donation updated");
     navigate({ to: "/materials/$id", params: { id } });
   }
 
   async function remove() {
+    if (!user) return;
     setDeleting(true);
-    const { error } = await supabase.from("materials").delete().eq("id", id);
+    const { data, error } = await supabase.from("materials").delete().eq("id", id).eq("contractor_id", user.id).select("id");
     setDeleting(false);
     if (error) { toast.error(error.message); return; }
+    if (!data?.length) { toast.error("You can only delete your own donations."); return; }
+    qc.invalidateQueries({ queryKey: ["material", id] });
+    qc.invalidateQueries({ queryKey: ["my-donations", user.id] });
+    qc.invalidateQueries({ queryKey: ["materials", "available"] });
     toast.success("Donation deleted");
     navigate({ to: "/materials" });
   }

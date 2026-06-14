@@ -5,7 +5,7 @@ import {
   HandHeart,
   ListChecks,
   FileBarChart,
-  UserCircle,
+  Settings as SettingsIcon,
   ShieldCheck,
   LogOut,
   Menu,
@@ -35,11 +35,11 @@ const ITEMS: Item[] = [
   { to: "/transactions", label: "Transactions", icon: ListChecks },
   { to: "/reports", label: "Reports", icon: FileBarChart, roles: ["contractor", "admin"] },
   { to: "/admin", label: "Admin", icon: ShieldCheck, roles: ["admin"] },
-  { to: "/profile", label: "Profile", icon: UserCircle },
+  { to: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 // Primary destinations surfaced in the mobile bottom tab bar.
-const MOBILE_TAB_KEYS = ["/dashboard", "/materials", "/donations", "/transactions", "/profile"];
+const MOBILE_TAB_KEYS = ["/dashboard", "/materials", "/donations", "/transactions", "/settings"];
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const location = useLocation();

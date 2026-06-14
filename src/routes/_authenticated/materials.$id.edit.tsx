@@ -59,6 +59,7 @@ function EditMaterial() {
         category_id: data.category_id ?? undefined,
         quantity: data.quantity ?? 1,
         contractor_id: data.contractor_id,
+        location: data.location ?? "",
       });
       setPhotos(data.photo_urls ?? []);
       setLoading(false);
@@ -78,6 +79,7 @@ function EditMaterial() {
       category_id: form.category_id,
       quantity: Number(form.quantity),
       photo_urls: photos,
+      location: form.location || null,
     }).eq("id", id).eq("contractor_id", user.id).select("id");
     setSaving(false);
     if (error) { toast.error(error.message); return; }
@@ -148,6 +150,14 @@ function EditMaterial() {
             <div className="space-y-1.5">
               <Label>Quantity</Label>
               <Input type="number" inputMode="decimal" min="0.01" step="0.01" required {...f("quantity")} />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Location <span className="text-muted-foreground font-normal">(optional)</span></Label>
+              <Input
+                {...f("location")}
+                placeholder="e.g. 123 Main St, New York, NY"
+              />
             </div>
 
             <div className="space-y-1.5">

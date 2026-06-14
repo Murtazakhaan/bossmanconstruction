@@ -41,6 +41,7 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          location: string | null
           photo_urls: string[]
           pickup_address: string | null
           pickup_city: string | null
@@ -62,6 +63,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          location?: string | null
           photo_urls?: string[]
           pickup_address?: string | null
           pickup_city?: string | null
@@ -83,6 +85,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          location?: string | null
           photo_urls?: string[]
           pickup_address?: string | null
           pickup_city?: string | null

@@ -33,6 +33,7 @@ function NewDonation() {
     description: "",
     category_id: undefined as string | undefined,
     quantity: "",
+    location: "",
   });
 
   useEffect(() => {
@@ -55,6 +56,7 @@ function NewDonation() {
       unit: "units",
       unit_value_usd: 0,
       photo_urls: photos,
+      location: form.location || null,
     };
     const { error } = await supabase.from("materials").insert(payload);
     setSaving(false);
@@ -103,6 +105,15 @@ function NewDonation() {
                 required
                 value={form.quantity}
                 onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Location <span className="text-muted-foreground font-normal">(optional)</span></Label>
+              <Input
+                value={form.location}
+                onChange={(e) => setForm({ ...form, location: e.target.value })}
+                placeholder="e.g. 123 Main St, New York, NY"
               />
             </div>
 

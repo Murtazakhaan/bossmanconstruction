@@ -18,6 +18,21 @@ function Dashboard() {
   const isContractor = roles.includes("contractor");
   const isRecipient = roles.includes("recipient");
 
+  const { data: profile } = useQuery({
+    queryKey: ["profile", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", user!.id)
+        .maybeSingle();
+      return data;
+    },
+  });
+
+  const displayName = profile?.full_name?.trim() || (user?.email ? user.email.split("@")[0] : "");
+
   const { data: stats } = useQuery({
     queryKey: ["dashboard-stats", user?.id],
     enabled: !!user,
@@ -50,8 +65,8 @@ function Dashboard() {
   return (
     <AppShell title="Dashboard">
       <PageHeader
-        eyebrow={isContractor ? "Contractor" : isRecipient ? "Recipient" : "Member"}
-        title={`Welcome back${user?.email ? ", " + user.email.split("@")[0] : ""}.`}
+        eyebrow={isContractor ? "Donor" : isRecipient ? "Recipient" : "Member"}
+        title={`Welcome back${displayName ? ", " + displayName : ""}.`}
         description="Here's a snapshot of your activity in BCM."
         actions={
           isContractor ? (

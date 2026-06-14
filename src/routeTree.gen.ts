@@ -23,6 +23,7 @@ import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedMaterialsIndexRouteImport } from './routes/_authenticated/materials.index'
 import { Route as AuthenticatedDonationsIndexRouteImport } from './routes/_authenticated/donations.index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedTransactionsIdRouteImport } from './routes/_authenticated/transactions.$id'
 import { Route as AuthenticatedSettingsSecurityRouteImport } from './routes/_authenticated/settings.security'
 import { Route as AuthenticatedSettingsFavoritesRouteImport } from './routes/_authenticated/settings.favorites'
 import { Route as AuthenticatedSettingsDeleteAccountRouteImport } from './routes/_authenticated/settings.delete-account'
@@ -112,6 +113,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedTransactionsIdRoute =
+  AuthenticatedTransactionsIdRouteImport.update({
+    id: '/transactions/$id',
+    path: '/transactions/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsSecurityRoute =
   AuthenticatedSettingsSecurityRouteImport.update({
     id: '/security',
@@ -225,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/settings/delete-account': typeof AuthenticatedSettingsDeleteAccountRoute
   '/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
+  '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/donations/': typeof AuthenticatedDonationsIndexRoute
   '/materials/': typeof AuthenticatedMaterialsIndexRoute
@@ -253,6 +261,7 @@ export interface FileRoutesByTo {
   '/settings/delete-account': typeof AuthenticatedSettingsDeleteAccountRoute
   '/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
+  '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/donations': typeof AuthenticatedDonationsIndexRoute
   '/materials': typeof AuthenticatedMaterialsIndexRoute
@@ -285,6 +294,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/delete-account': typeof AuthenticatedSettingsDeleteAccountRoute
   '/_authenticated/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
   '/_authenticated/settings/security': typeof AuthenticatedSettingsSecurityRoute
+  '/_authenticated/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/donations/': typeof AuthenticatedDonationsIndexRoute
   '/_authenticated/materials/': typeof AuthenticatedMaterialsIndexRoute
@@ -317,6 +327,7 @@ export interface FileRouteTypes {
     | '/settings/delete-account'
     | '/settings/favorites'
     | '/settings/security'
+    | '/transactions/$id'
     | '/admin/'
     | '/donations/'
     | '/materials/'
@@ -345,6 +356,7 @@ export interface FileRouteTypes {
     | '/settings/delete-account'
     | '/settings/favorites'
     | '/settings/security'
+    | '/transactions/$id'
     | '/admin'
     | '/donations'
     | '/materials'
@@ -376,6 +388,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/delete-account'
     | '/_authenticated/settings/favorites'
     | '/_authenticated/settings/security'
+    | '/_authenticated/transactions/$id'
     | '/_authenticated/admin/'
     | '/_authenticated/donations/'
     | '/_authenticated/materials/'
@@ -490,6 +503,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/transactions/$id': {
+      id: '/_authenticated/transactions/$id'
+      path: '/transactions/$id'
+      fullPath: '/transactions/$id'
+      preLoaderRoute: typeof AuthenticatedTransactionsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/security': {
       id: '/_authenticated/settings/security'
@@ -671,6 +691,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
   AuthenticatedDonationsNewRoute: typeof AuthenticatedDonationsNewRoute
   AuthenticatedMaterialsIdRoute: typeof AuthenticatedMaterialsIdRouteWithChildren
+  AuthenticatedTransactionsIdRoute: typeof AuthenticatedTransactionsIdRoute
   AuthenticatedDonationsIndexRoute: typeof AuthenticatedDonationsIndexRoute
   AuthenticatedMaterialsIndexRoute: typeof AuthenticatedMaterialsIndexRoute
   AuthenticatedTransactionsIndexRoute: typeof AuthenticatedTransactionsIndexRoute
@@ -684,6 +705,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
   AuthenticatedDonationsNewRoute: AuthenticatedDonationsNewRoute,
   AuthenticatedMaterialsIdRoute: AuthenticatedMaterialsIdRouteWithChildren,
+  AuthenticatedTransactionsIdRoute: AuthenticatedTransactionsIdRoute,
   AuthenticatedDonationsIndexRoute: AuthenticatedDonationsIndexRoute,
   AuthenticatedMaterialsIndexRoute: AuthenticatedMaterialsIndexRoute,
   AuthenticatedTransactionsIndexRoute: AuthenticatedTransactionsIndexRoute,

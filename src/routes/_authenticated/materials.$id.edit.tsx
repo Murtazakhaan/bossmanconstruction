@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
@@ -29,6 +29,13 @@ export const Route = createFileRoute("/_authenticated/materials/$id/edit")({
   component: EditMaterial,
 });
 
+const MAX_PHOTOS = 5;
+
+function shortIdFrom(uuid: string) {
+  const digits = uuid.replace(/\D/g, "").slice(0, 10).padEnd(10, "0");
+  return "#" + digits;
+}
+
 function EditMaterial() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
@@ -40,6 +47,7 @@ function EditMaterial() {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [form, setForm] = useState<any>(null);
+  const materialId = useMemo(() => shortIdFrom(id), [id]);
 
   useEffect(() => {
     supabase.from("material_categories").select("*").order("sort_order").then(({ data }) => setCats(data ?? []));
@@ -50,15 +58,6 @@ function EditMaterial() {
         description: data.description ?? "",
         category_id: data.category_id ?? undefined,
         quantity: data.quantity ?? 1,
-        unit: data.unit ?? "units",
-        unit_value_usd: data.unit_value_usd ?? 0,
-        pickup_address: data.pickup_address ?? "",
-        pickup_city: data.pickup_city ?? "",
-        pickup_state: data.pickup_state ?? "",
-        pickup_zip: data.pickup_zip ?? "",
-        available_from: data.available_from ?? "",
-        available_until: data.available_until ?? "",
-        status: data.status,
         contractor_id: data.contractor_id,
       });
       setPhotos(data.photo_urls ?? []);
@@ -69,21 +68,15 @@ function EditMaterial() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!user || !form) return;
+    if (!form.category_id) { toast.error("Please choose a material type"); return; }
+    if (!form.quantity || Number(form.quantity) <= 0) { toast.error("Please enter a quantity"); return; }
     setSaving(true);
+    const categoryName = cats.find((c) => c.id === form.category_id)?.name ?? "Material";
     const { data, error } = await supabase.from("materials").update({
-      title: form.title,
-      description: form.description,
-      category_id: form.category_id || null,
+      title: `${categoryName} ${materialId}`,
+      description: form.description || null,
+      category_id: form.category_id,
       quantity: Number(form.quantity),
-      unit: form.unit,
-      unit_value_usd: Number(form.unit_value_usd),
-      pickup_address: form.pickup_address,
-      pickup_city: form.pickup_city,
-      pickup_state: form.pickup_state,
-      pickup_zip: form.pickup_zip,
-      available_from: form.available_from || null,
-      available_until: form.available_until || null,
-      status: form.status,
       photo_urls: photos,
     }).eq("id", id).eq("contractor_id", user.id).select("id");
     setSaving(false);
@@ -120,53 +113,48 @@ function EditMaterial() {
   return (
     <AppShell title="Edit donation">
       <PageHeader
-        eyebrow="Contractor"
+        eyebrow="Donor"
         title="Edit donation"
-        description="Update details, photos, or availability."
+        description="Update photos or details."
         actions={<Button variant="outline" asChild><Link to="/materials/$id" params={{ id }}>← Back</Link></Button>}
       />
-      <Card className="max-w-3xl">
+      <Card className="max-w-xl">
         <CardContent className="p-4 sm:p-6">
           <form onSubmit={submit} className="space-y-4">
-            <div className="space-y-1.5"><Label>Title</Label><Input required {...f("title")} /></div>
-            <div className="space-y-1.5"><Label>Category</Label>
+            <div className="space-y-1.5">
+              <Label>Photos <span className="text-muted-foreground font-normal">(maximum {MAX_PHOTOS} images)</span></Label>
+              {user ? (
+                <MaterialPhotoUpload
+                  userId={user.id}
+                  value={photos}
+                  onChange={(next) => setPhotos(next.slice(0, MAX_PHOTOS))}
+                />
+              ) : null}
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Material type</Label>
               <Select value={form.category_id ?? undefined} onValueChange={(v) => setForm({ ...form, category_id: v })}>
-                <SelectTrigger><SelectValue placeholder="Choose a category" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="Choose a material type" /></SelectTrigger>
                 <SelectContent>{cats.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
-            <div className="space-y-1.5"><Label>Description</Label><Textarea rows={3} {...f("description")} /></div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              <div className="space-y-1.5"><Label>Quantity</Label><Input type="number" inputMode="decimal" min="0.01" step="0.01" required {...f("quantity")} /></div>
-              <div className="space-y-1.5"><Label>Unit</Label><Input required {...f("unit")} /></div>
-              <div className="space-y-1.5 col-span-2 sm:col-span-1"><Label>Value / unit (USD)</Label><Input type="number" inputMode="decimal" min="0" step="0.01" required {...f("unit_value_usd")} /></div>
-            </div>
-            <div className="space-y-1.5"><Label>Status</Label>
-              <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="available">Available</SelectItem>
-                  <SelectItem value="reserved">Reserved</SelectItem>
-                  <SelectItem value="claimed">Claimed</SelectItem>
-                  <SelectItem value="picked_up">Picked up</SelectItem>
-                  <SelectItem value="expired">Expired</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-1.5"><Label>Pickup address</Label><Input {...f("pickup_address")} /></div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              <div className="space-y-1.5 col-span-2 sm:col-span-1"><Label>City</Label><Input {...f("pickup_city")} /></div>
-              <div className="space-y-1.5"><Label>State</Label><Input {...f("pickup_state")} /></div>
-              <div className="space-y-1.5"><Label>ZIP</Label><Input inputMode="numeric" {...f("pickup_zip")} /></div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5"><Label>Available from</Label><Input type="date" {...f("available_from")} /></div>
-              <div className="space-y-1.5"><Label>Available until</Label><Input type="date" {...f("available_until")} /></div>
-            </div>
+
             <div className="space-y-1.5">
-              <Label>Photos</Label>
-              {user ? <MaterialPhotoUpload userId={user.id} value={photos} onChange={setPhotos} /> : null}
+              <Label>Material ID <span className="text-muted-foreground font-normal">(auto-generated)</span></Label>
+              <Input value={materialId} readOnly className="bg-muted/50" />
             </div>
+
+            <div className="space-y-1.5">
+              <Label>Quantity</Label>
+              <Input type="number" inputMode="decimal" min="0.01" step="0.01" required {...f("quantity")} />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Description <span className="text-muted-foreground font-normal">(optional)</span></Label>
+              <Textarea rows={4} {...f("description")} />
+            </div>
+
             <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between">
               <AlertDialog>
                 <AlertDialogTrigger asChild>

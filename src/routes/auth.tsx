@@ -208,6 +208,7 @@ function SignUpForm({ defaultRole, onSwitch }: { defaultRole: "contractor" | "re
   const [fullName, setFullName] = useState("");
   const [role, setRole] = useState<"contractor" | "recipient">(defaultRole);
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState<"role" | "info">("role");
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -244,35 +245,51 @@ function SignUpForm({ defaultRole, onSwitch }: { defaultRole: "contractor" | "re
 
   return (
     <form onSubmit={onSubmit} className="mt-5 space-y-4">
-      <div className="space-y-2">
-        <Label>I want to…</Label>
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {roleOptions.map(({ v, label, sub, Icon }) => {
-            const active = role === v;
-            return (
-              <button
-                type="button"
-                key={v}
-                onClick={() => setRole(v)}
-                className={`flex items-start gap-3 rounded-lg border p-3 text-left transition ${
-                  active ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border hover:border-primary/40"
-                }`}
-              >
-                <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-md ${active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  <Icon className="h-4 w-4" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold">{label}</span>
-                  <span className="block text-xs text-muted-foreground">{sub}</span>
-                </span>
-                {active && <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="space-y-1.5">
+      {step === "role" ? (
+        <>
+          <div className="space-y-2">
+            <Label>I want to…</Label>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {roleOptions.map(({ v, label, sub, Icon }) => {
+                const active = role === v;
+                return (
+                  <button
+                    type="button"
+                    key={v}
+                    onClick={() => setRole(v)}
+                    className={`flex items-start gap-3 rounded-lg border p-3 text-left transition ${
+                      active ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border hover:border-primary/40"
+                    }`}
+                  >
+                    <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-md ${active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-semibold">{label}</span>
+                      <span className="block text-xs text-muted-foreground">{sub}</span>
+                    </span>
+                    {active && <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <Button type="button" onClick={() => setStep("info")} className="h-12 w-full text-base font-semibold bg-[#0a0f2c] hover:bg-[#0a0f2c]/90">
+            Continue
+          </Button>
+          <p className="text-center text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <button type="button" onClick={onSwitch} className="font-semibold text-foreground underline-offset-4 hover:underline">
+              Sign In
+            </button>
+          </p>
+        </>
+      ) : (
+        <>
+          <button type="button" onClick={() => setStep("role")} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="h-4 w-4" /> Change role
+          </button>
+          <div className="space-y-1.5">
         <Label htmlFor="fullName">Your name</Label>
         <Input id="fullName" required value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="name" className="h-12 text-base" placeholder="Jane Smith" />
       </div>
@@ -301,6 +318,8 @@ function SignUpForm({ defaultRole, onSwitch }: { defaultRole: "contractor" | "re
           Sign In
         </button>
       </p>
+        </>
+      )}
     </form>
   );
 }

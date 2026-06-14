@@ -53,6 +53,12 @@ function ProfilePage() {
             <div className="space-y-1.5"><Label>Full name</Label><Input {...f("full_name")} /></div>
             <div className="space-y-1.5"><Label>Organization</Label><Input {...f("org_name")} /></div>
           </div>
+          {isContractor && (
+            <div className="space-y-1.5">
+              <Label>Who is donating?</Label>
+              <Input {...f("donor_type_other")} placeholder="e.g. Contractor, Homeowner, Community Organization" />
+            </div>
+          )}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5"><Label>Phone</Label><Input {...f("phone")} /></div>
             <div className="space-y-1.5"><Label>ZIP</Label><Input {...f("zip")} /></div>
@@ -63,32 +69,6 @@ function ProfilePage() {
             <div className="space-y-1.5"><Label>State</Label><Input {...f("state")} placeholder="e.g. TX" /></div>
           </div>
           <div className="space-y-1.5"><Label>Bio / about</Label><Textarea {...f("bio")} rows={3} /></div>
-          {isContractor && (
-            <div className="space-y-3 rounded-md border p-3">
-              <div className="text-sm font-medium">Donor details</div>
-              <div className="space-y-1.5">
-                <Label>Who's donating?</Label>
-                <Select
-                  value={p.donor_type ?? undefined}
-                  onValueChange={(v) => setP({ ...p, donor_type: v, ...(v !== "other" ? { donor_type_other: "" } : {}) })}
-                >
-                  <SelectTrigger><SelectValue placeholder="Select donor type" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="contractor">Contractor</SelectItem>
-                    <SelectItem value="homeowner">Homeowner</SelectItem>
-                    <SelectItem value="community_org">Community Organization</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              {p.donor_type === "other" && (
-                <div className="space-y-1.5">
-                  <Label>Please specify</Label>
-                  <Input {...f("donor_type_other")} placeholder="Describe who's donating" />
-                </div>
-              )}
-            </div>
-          )}
           {isRecipient && (
             <div className="space-y-3 rounded-md border p-3">
               <div className="text-sm font-medium">Recipient details</div>

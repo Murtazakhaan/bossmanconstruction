@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link, Outlet } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { AppShell } from "@/components/app-shell";
@@ -19,6 +19,14 @@ export const Route = createFileRoute("/_authenticated/materials/$id")({
 });
 
 function MaterialDetail() {
+  const isEditChild = Route.useMatch({
+    select: (match) => match.pathname.endsWith("/edit"),
+  });
+
+  if (isEditChild) {
+    return <Outlet />;
+  }
+
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const qc = useQueryClient();

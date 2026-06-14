@@ -56,7 +56,21 @@ function ProfilePage() {
           {isContractor && (
             <div className="space-y-1.5">
               <Label>Who is donating?</Label>
-              <Input {...f("donor_type_other")} placeholder="e.g. Contractor, Homeowner, Community Organization" />
+              <Select
+                value={p.donor_type ?? undefined}
+                onValueChange={(v) => setP({ ...p, donor_type: v, ...(v !== "other" ? { donor_type_other: "" } : {}) })}
+              >
+                <SelectTrigger><SelectValue placeholder="Select donor type" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="contractor">Contractor</SelectItem>
+                  <SelectItem value="homeowner">Homeowner</SelectItem>
+                  <SelectItem value="community_org">Community Organization</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+              {p.donor_type === "other" && (
+                <Input {...f("donor_type_other")} placeholder="Please specify" className="mt-2" />
+              )}
             </div>
           )}
           <div className="grid grid-cols-2 gap-3">

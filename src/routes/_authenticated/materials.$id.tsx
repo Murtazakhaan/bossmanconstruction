@@ -124,7 +124,7 @@ function MaterialDetail() {
         <Card>
           <CardContent className="p-4 sm:p-6">
             <h3 className="font-display text-sm font-semibold uppercase tracking-wider">Donor</h3>
-            <div className="mt-1 text-sm">{(m as any).profiles?.org_name || (m as any).profiles?.full_name || "Contractor"}</div>
+            <div className="mt-1 text-sm">{donor?.org_name || donor?.full_name || "Contractor"}</div>
 
             {roles.includes("recipient") && m.status === "available" && m.contractor_id !== user?.id ? (
               <div className="mt-6 space-y-3 border-t border-border pt-4">

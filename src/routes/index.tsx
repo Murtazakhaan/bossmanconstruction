@@ -32,7 +32,7 @@ function Landing() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-3">
             <BcmLogo variant="mark" />
-          <nav className="hidden items-center gap-8 text-sm font-medium uppercase tracking-wide text-muted-foreground md:flex">
+          </Link>
             <a href="#how" className="hover:text-foreground">How it works</a>
             <a href="#who" className="hover:text-foreground">Who it's for</a>
             <a href="#impact" className="hover:text-foreground">Impact</a>

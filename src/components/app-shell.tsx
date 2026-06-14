@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type Item = {
   to: string;
@@ -146,6 +147,7 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
               </h1>
             ) : null}
           </div>
+          <ThemeToggle />
         </header>
         <main className="flex-1 px-4 py-6 md:px-8 md:py-8">{children}</main>
       </div>

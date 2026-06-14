@@ -180,27 +180,26 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
           className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur md:hidden"
           style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
-          <ul className="mx-auto flex max-w-md items-stretch justify-around">
-            {mobileTabs.map((item) => {
-              const Icon = item.icon;
-              const active =
-                location.pathname === item.to || location.pathname.startsWith(item.to + "/");
-              return (
-                <li key={item.to} className="flex-1">
-                  <Link
-                    to={item.to}
-                    className={cn(
-                      "flex flex-col items-center gap-1 px-2 py-2.5 text-[10px] font-semibold uppercase tracking-wider transition-colors",
-                      active ? "text-primary" : "text-muted-foreground hover:text-foreground",
-                    )}
-                  >
-                    <Icon className="h-5 w-5" />
-                    <span className="leading-none">{item.label.split(" ")[0]}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+        <ul className="mx-auto flex max-w-md items-stretch justify-around">
+          {mobileTabs.map((item) => {
+            const Icon = item.icon;
+            const active =
+              location.pathname === item.to || location.pathname.startsWith(item.to + "/");
+            return (
+              <li key={item.to} className="flex-1">
+                <Link
+                  to={item.to}
+                  className={cn(
+                    "flex items-center justify-center px-2 py-3 transition-colors",
+                    active ? "text-primary" : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  <Icon className="h-7 w-7" />
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
         </nav>
       </div>
     </div>

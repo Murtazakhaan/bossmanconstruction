@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Bossman Construction Management — Donate & Receive Surplus Materials" },
+      { title: "Bossman Construction Management - Donate & Receive Surplus Materials" },
       {
         name: "description",
         content:
-          "Bossman Construction Management routes contractors' surplus materials to U.S. homeowners and nonprofits that need them — with tracking, pickups, and tax-deductible documentation.",
+          "Bossman Construction Management routes contractors' surplus materials to U.S. homeowners and nonprofits that need them - with tracking, pickups, and tax-deductible documentation.",
       },
       { property: "og:title", content: "Bossman Construction Management" },
       {
@@ -73,7 +73,7 @@ function Landing() {
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/80">
               Bossman Construction Management connects contractors with leftover materials to
               homeowners and nonprofits who need them. Track every pickup, message in-app, and
-              document tax-deductible donations — all in one place.
+              document tax-deductible donations - all in one place.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button asChild size="lg" className="h-12 px-6 text-sm font-semibold uppercase tracking-wider">
@@ -119,12 +119,12 @@ function Landing() {
               How it works
             </div>
             <h2 className="mt-2 font-display text-4xl font-bold uppercase tracking-tight text-foreground">
-              From job site to family — in four steps.
+              From job site to family - in four steps.
             </h2>
           </div>
           <div className="grid gap-6 md:grid-cols-4">
             {[
-              { icon: HardHat, title: "List surplus", body: "Contractors post leftover lumber, drywall, insulation, doors — with quantities, value, and a photo." },
+              { icon: HardHat, title: "List surplus", body: "Contractors post leftover lumber, drywall, insulation, doors - with quantities, value, and a photo." },
               { icon: Recycle, title: "Get requested", body: "Recipients browse available materials and request what they need with a preferred pickup time." },
               { icon: Truck, title: "Schedule pickup", body: "Confirm pickup location and time. Status updates keep both sides in the loop in real time." },
               { icon: Receipt, title: "Document the value", body: "Every completed donation rolls into an annual tax summary, ready to download in January." },
@@ -181,7 +181,7 @@ function Landing() {
             <ul className="mt-6 space-y-3 text-sm text-foreground/80">
               {[
                 "Browse real surplus from real local contractors.",
-                "Request exactly what you need — no minimums.",
+                "Request exactly what you need - no minimums.",
                 "Coordinate pickup in-app, no phone tag.",
                 "Free of charge. No catch.",
               ].map((b) => (

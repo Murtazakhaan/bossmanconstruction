@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function BcmLogo({ className, variant = "full" }: Props) {
-  const sizeClass = variant === "mark" ? "h-8 w-auto" : "h-12 w-auto";
+  const sizeClass = variant === "mark" ? "h-12 w-auto" : "h-16 w-auto";
   const alt = "Bossman Construction Management";
 
   if (variant === "onDark") {

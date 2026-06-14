@@ -63,6 +63,12 @@ function ProfilePage() {
             <div className="space-y-1.5"><Label>Phone</Label><Input {...f("phone")} /></div>
             <div className="space-y-1.5"><Label>ZIP</Label><Input {...f("zip")} /></div>
           </div>
+          <div className="space-y-1.5"><Label>Address</Label><Input {...f("address_line")} /></div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5"><Label>City</Label><Input {...f("city")} /></div>
+            <div className="space-y-1.5"><Label>State</Label><Input {...f("state")} placeholder="e.g. TX" /></div>
+          </div>
+          <div className="space-y-1.5"><Label>Bio / about</Label><Textarea {...f("bio")} rows={3} /></div>
           {isRecipient && (
             <div className="space-y-3 rounded-md border p-3">
               <div className="text-sm font-medium">Recipient details</div>

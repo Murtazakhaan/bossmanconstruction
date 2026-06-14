@@ -120,10 +120,13 @@ function GoogleIconButton() {
   );
 }
 
-function PasswordInput({ id, value, onChange, autoComplete }: { id: string; value: string; onChange: (v: string) => void; autoComplete?: string }) {
+function PasswordInput({ id, value, onChange, autoComplete, showLock = true }: { id: string; value: string; onChange: (v: string) => void; autoComplete?: string; showLock?: boolean }) {
   const [show, setShow] = useState(false);
   return (
     <div className="relative">
+      {showLock && (
+        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      )}
       <Input
         id={id}
         type={show ? "text" : "password"}
@@ -132,7 +135,7 @@ function PasswordInput({ id, value, onChange, autoComplete }: { id: string; valu
         value={value}
         onChange={(e) => onChange(e.target.value)}
         autoComplete={autoComplete}
-        className="h-12 pr-11 text-base"
+        className={`h-12 text-base pr-11 ${showLock ? "pl-10" : ""}`}
       />
       <button
         type="button"

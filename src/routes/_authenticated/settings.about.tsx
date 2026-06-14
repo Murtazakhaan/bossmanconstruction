@@ -20,7 +20,7 @@ function AboutPage() {
         <Card>
           <CardContent className="space-y-4 p-5">
             <div className="flex items-center gap-3">
-              <BcmLogo variant="mark" className="bg-primary text-primary-foreground" />
+              <BcmLogo variant="mark" />
               <div>
                 <div className="font-display text-base font-bold uppercase tracking-wider">Bossman</div>
                 <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Construction Mgmt</div>

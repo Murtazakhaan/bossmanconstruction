@@ -327,27 +327,7 @@ export type Database = {
       }
     }
     Views: {
-      public_profiles: {
-        Row: {
-          bio: string | null
-          full_name: string | null
-          id: string | null
-          org_name: string | null
-        }
-        Insert: {
-          bio?: string | null
-          full_name?: string | null
-          id?: string | null
-          org_name?: string | null
-        }
-        Update: {
-          bio?: string | null
-          full_name?: string | null
-          id?: string | null
-          org_name?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       has_role: {

@@ -44,7 +44,7 @@ function MaterialDetail() {
     enabled: !!(m as any)?.contractor_id,
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("public_profiles" as any)
+        .from("profiles")
         .select("full_name, org_name")
         .eq("id", (m as any).contractor_id)
         .maybeSingle();
@@ -124,7 +124,7 @@ function MaterialDetail() {
         <Card>
           <CardContent className="p-4 sm:p-6">
             <h3 className="font-display text-sm font-semibold uppercase tracking-wider">Donor</h3>
-            <div className="mt-1 text-sm">{(donor as any)?.org_name || (donor as any)?.full_name || "Contractor"}</div>
+            <div className="mt-1 text-sm">{donor?.org_name || donor?.full_name || "Contractor"}</div>
 
             {roles.includes("recipient") && m.status === "available" && m.contractor_id !== user?.id ? (
               <div className="mt-6 space-y-3 border-t border-border pt-4">

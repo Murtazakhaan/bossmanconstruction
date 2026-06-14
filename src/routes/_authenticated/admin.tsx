@@ -392,9 +392,9 @@ function CategoriesTab() {
             <ul className="divide-y divide-border">
               {data.map((c: any) => (
                 <li key={c.id} className="flex items-center justify-between gap-3 px-4 py-3">
-                  {editing?.id === c.id ? (
+                  {editing && editing.id === c.id ? (
                     <>
-                      <Input value={editing.name} onChange={(e) => setEditing({ ...editing, name: e.target.value })} className="h-9 max-w-sm" />
+                      <Input value={editing.name} onChange={(e) => setEditing({ id: c.id, name: e.target.value })} className="h-9 max-w-sm" />
                       <div className="flex gap-2">
                         <Button size="sm" onClick={() => update.mutate({ id: c.id, n: editing.name.trim() })} disabled={!editing.name.trim()}>Save</Button>
                         <Button size="sm" variant="ghost" onClick={() => setEditing(null)}>Cancel</Button>

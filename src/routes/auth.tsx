@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
-import { Loader2, ArrowLeft, Eye, EyeOff, HardHat, Home, CheckCircle2 } from "lucide-react";
+import { Loader2, ArrowLeft, Eye, EyeOff, HardHat, Home, CheckCircle2, Mail, Lock } from "lucide-react";
 
 const searchSchema = z.object({
   mode: z.enum(["signin", "signup"]).optional(),

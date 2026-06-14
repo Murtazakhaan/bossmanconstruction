@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import {
   LayoutDashboard,
-  Package,
-  HandHeart,
+  Inbox,
+  Gift,
   ListChecks,
   FileBarChart,
   Settings as SettingsIcon,

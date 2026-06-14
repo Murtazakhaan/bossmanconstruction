@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   Inbox,
   Gift,
+  Package,
   ListChecks,
   FileBarChart,
   Settings as SettingsIcon,

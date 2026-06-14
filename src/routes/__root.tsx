@@ -13,7 +13,6 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme-provider";
 
 function NotFoundComponent() {
   return (
@@ -97,6 +96,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Bossman Construction Management" },
+      { name: "description", content: "Bossman Construction Management is a web app for managing construction materials and transactions for American users." },
+      { property: "og:description", content: "Bossman Construction Management is a web app for managing construction materials and transactions for American users." },
+      { name: "twitter:description", content: "Bossman Construction Management is a web app for managing construction materials and transactions for American users." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/04b7f4d7-fd5c-436e-bea1-d45f98a1ec63/id-preview-427b4454--d60c18e0-1a66-4f88-9150-b6bcd08da126.lovable.app-1781451971791.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/04b7f4d7-fd5c-436e-bea1-d45f98a1ec63/id-preview-427b4454--d60c18e0-1a66-4f88-9150-b6bcd08da126.lovable.app-1781451971791.png" },
     ],
     links: [
       {
@@ -153,11 +158,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-        <Toaster richColors closeButton position="top-right" />
-      </ThemeProvider>
+      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <Outlet />
+      <Toaster richColors closeButton position="top-right" />
     </QueryClientProvider>
   );
 }

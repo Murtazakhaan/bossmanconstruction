@@ -22,6 +22,7 @@ import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedMaterialsIndexRouteImport } from './routes/_authenticated/materials.index'
 import { Route as AuthenticatedDonationsIndexRouteImport } from './routes/_authenticated/donations.index'
 import { Route as AuthenticatedTransactionsIdRouteImport } from './routes/_authenticated/transactions.$id'
+import { Route as AuthenticatedSettingsSecurityRouteImport } from './routes/_authenticated/settings.security'
 import { Route as AuthenticatedSettingsFavoritesRouteImport } from './routes/_authenticated/settings.favorites'
 import { Route as AuthenticatedSettingsChangePasswordRouteImport } from './routes/_authenticated/settings.change-password'
 import { Route as AuthenticatedMaterialsIdRouteImport } from './routes/_authenticated/materials.$id'
@@ -97,6 +98,12 @@ const AuthenticatedTransactionsIdRoute =
     path: '/transactions/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsSecurityRoute =
+  AuthenticatedSettingsSecurityRouteImport.update({
+    id: '/security',
+    path: '/security',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
 const AuthenticatedSettingsFavoritesRoute =
   AuthenticatedSettingsFavoritesRouteImport.update({
     id: '/favorites',
@@ -140,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
+  '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/donations/': typeof AuthenticatedDonationsIndexRoute
   '/materials/': typeof AuthenticatedMaterialsIndexRoute
@@ -158,6 +166,7 @@ export interface FileRoutesByTo {
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
+  '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/donations': typeof AuthenticatedDonationsIndexRoute
   '/materials': typeof AuthenticatedMaterialsIndexRoute
@@ -179,6 +188,7 @@ export interface FileRoutesById {
   '/_authenticated/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/_authenticated/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/_authenticated/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
+  '/_authenticated/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/_authenticated/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/_authenticated/donations/': typeof AuthenticatedDonationsIndexRoute
   '/_authenticated/materials/': typeof AuthenticatedMaterialsIndexRoute
@@ -200,6 +210,7 @@ export interface FileRouteTypes {
     | '/materials/$id'
     | '/settings/change-password'
     | '/settings/favorites'
+    | '/settings/security'
     | '/transactions/$id'
     | '/donations/'
     | '/materials/'
@@ -218,6 +229,7 @@ export interface FileRouteTypes {
     | '/materials/$id'
     | '/settings/change-password'
     | '/settings/favorites'
+    | '/settings/security'
     | '/transactions/$id'
     | '/donations'
     | '/materials'
@@ -238,6 +250,7 @@ export interface FileRouteTypes {
     | '/_authenticated/materials/$id'
     | '/_authenticated/settings/change-password'
     | '/_authenticated/settings/favorites'
+    | '/_authenticated/settings/security'
     | '/_authenticated/transactions/$id'
     | '/_authenticated/donations/'
     | '/_authenticated/materials/'
@@ -345,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTransactionsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings/security': {
+      id: '/_authenticated/settings/security'
+      path: '/security'
+      fullPath: '/settings/security'
+      preLoaderRoute: typeof AuthenticatedSettingsSecurityRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
     '/_authenticated/settings/favorites': {
       id: '/_authenticated/settings/favorites'
       path: '/favorites'
@@ -386,6 +406,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedSettingsRouteChildren {
   AuthenticatedSettingsChangePasswordRoute: typeof AuthenticatedSettingsChangePasswordRoute
   AuthenticatedSettingsFavoritesRoute: typeof AuthenticatedSettingsFavoritesRoute
+  AuthenticatedSettingsSecurityRoute: typeof AuthenticatedSettingsSecurityRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
 }
 
@@ -393,6 +414,7 @@ const AuthenticatedSettingsRouteChildren: AuthenticatedSettingsRouteChildren = {
   AuthenticatedSettingsChangePasswordRoute:
     AuthenticatedSettingsChangePasswordRoute,
   AuthenticatedSettingsFavoritesRoute: AuthenticatedSettingsFavoritesRoute,
+  AuthenticatedSettingsSecurityRoute: AuthenticatedSettingsSecurityRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
 }
 

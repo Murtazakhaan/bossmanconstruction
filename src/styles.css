@@ -66,9 +66,9 @@
   /* Surfaces */
   --background: oklch(0.972 0.006 85);      /* warm off-white #f5f3ee */
   --foreground: oklch(0.22 0.04 265);       /* deep navy text */
-  --card: oklch(1 0 0);
+  --card: oklch(1 0 0 / 0.55);
   --card-foreground: oklch(0.22 0.04 265);
-  --popover: oklch(1 0 0);
+  --popover: oklch(1 0 0 / 0.75);
   --popover-foreground: oklch(0.22 0.04 265);
 
   /* Brand navy — matches BCM logo #1a2748 */
@@ -79,11 +79,11 @@
   --concrete: oklch(0.78 0.008 85);
   --concrete-dark: oklch(0.55 0.012 85);
 
-  --secondary: oklch(0.92 0.008 85);
+  --secondary: oklch(0.92 0.008 85 / 0.6);
   --secondary-foreground: oklch(0.262 0.052 265);
-  --muted: oklch(0.94 0.006 85);
+  --muted: oklch(0.94 0.006 85 / 0.6);
   --muted-foreground: oklch(0.48 0.014 265);
-  --accent: oklch(0.92 0.008 85);
+  --accent: oklch(0.92 0.008 85 / 0.6);
   --accent-foreground: oklch(0.262 0.052 265);
 
   --destructive: oklch(0.55 0.21 28);
@@ -93,8 +93,8 @@
   --warning: oklch(0.74 0.16 75);
   --warning-foreground: oklch(0.22 0.04 265);
 
-  --border: oklch(0.86 0.008 85);
-  --input: oklch(0.86 0.008 85);
+  --border: oklch(1 0 0 / 0.4);
+  --input: oklch(0.86 0.008 85 / 0.5);
   --ring: oklch(0.36 0.06 265);
 
   --chart-1: oklch(0.262 0.052 265);
@@ -103,41 +103,41 @@
   --chart-4: oklch(0.55 0.012 85);
   --chart-5: oklch(0.55 0.21 28);
 
-  --sidebar: oklch(0.18 0.04 265);
+  --sidebar: oklch(0.18 0.04 265 / 0.7);
   --sidebar-foreground: oklch(0.94 0.006 85);
   --sidebar-primary: oklch(0.74 0.16 75);
   --sidebar-primary-foreground: oklch(0.18 0.04 265);
-  --sidebar-accent: oklch(0.24 0.05 265);
+  --sidebar-accent: oklch(0.24 0.05 265 / 0.6);
   --sidebar-accent-foreground: oklch(0.98 0.005 85);
-  --sidebar-border: oklch(0.28 0.04 265);
+  --sidebar-border: oklch(1 0 0 / 0.1);
   --sidebar-ring: oklch(0.74 0.16 75);
 }
 
 .dark {
   --background: oklch(0.16 0.03 265);
   --foreground: oklch(0.96 0.006 85);
-  --card: oklch(0.20 0.04 265);
+  --card: oklch(0.20 0.04 265 / 0.55);
   --card-foreground: oklch(0.96 0.006 85);
-  --popover: oklch(0.20 0.04 265);
+  --popover: oklch(0.20 0.04 265 / 0.8);
   --popover-foreground: oklch(0.96 0.006 85);
   --primary: oklch(0.96 0.006 85);
   --primary-foreground: oklch(0.20 0.04 265);
-  --secondary: oklch(0.26 0.04 265);
+  --secondary: oklch(0.26 0.04 265 / 0.55);
   --secondary-foreground: oklch(0.96 0.006 85);
-  --muted: oklch(0.26 0.04 265);
+  --muted: oklch(0.26 0.04 265 / 0.55);
   --muted-foreground: oklch(0.72 0.012 85);
-  --accent: oklch(0.26 0.04 265);
+  --accent: oklch(0.26 0.04 265 / 0.55);
   --accent-foreground: oklch(0.96 0.006 85);
   --destructive: oklch(0.62 0.2 28);
   --destructive-foreground: oklch(0.98 0.005 85);
-  --border: oklch(1 0 0 / 10%);
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.6 0.04 265);
-  --sidebar: oklch(0.14 0.03 265);
+  --sidebar: oklch(0.14 0.03 265 / 0.7);
   --sidebar-foreground: oklch(0.96 0.006 85);
   --sidebar-primary: oklch(0.74 0.16 75);
   --sidebar-primary-foreground: oklch(0.18 0.04 265);
-  --sidebar-accent: oklch(0.22 0.04 265);
+  --sidebar-accent: oklch(0.22 0.04 265 / 0.6);
   --sidebar-accent-foreground: oklch(0.96 0.006 85);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.74 0.16 75);
@@ -150,6 +150,12 @@
 
   body {
     background-color: var(--color-background);
+    background-image:
+      radial-gradient(at 12% 18%, oklch(0.74 0.16 75 / 0.25) 0, transparent 45%),
+      radial-gradient(at 88% 12%, oklch(0.55 0.14 155 / 0.22) 0, transparent 45%),
+      radial-gradient(at 70% 88%, oklch(0.262 0.052 265 / 0.28) 0, transparent 50%),
+      radial-gradient(at 18% 82%, oklch(0.55 0.21 28 / 0.18) 0, transparent 45%);
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -159,6 +165,36 @@
     font-family: var(--font-display);
     letter-spacing: 0.01em;
   }
+}
+
+/* Glassmorphism surfaces — applied to cards, popovers, sheets, dialogs, sidebar */
+@layer base {
+  [data-slot="card"],
+  .bg-card,
+  .bg-popover,
+  .bg-sidebar {
+    backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid oklch(1 0 0 / 0.18);
+    box-shadow:
+      0 8px 32px -8px oklch(0.22 0.04 265 / 0.18),
+      inset 0 1px 0 oklch(1 0 0 / 0.25);
+  }
+  .dark [data-slot="card"],
+  .dark .bg-card,
+  .dark .bg-popover,
+  .dark .bg-sidebar {
+    border-color: oklch(1 0 0 / 0.1);
+    box-shadow:
+      0 8px 32px -8px oklch(0 0 0 / 0.5),
+      inset 0 1px 0 oklch(1 0 0 / 0.08);
+  }
+}
+
+@utility glass {
+  background-color: oklch(1 0 0 / 0.5);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid oklch(1 0 0 / 0.2);
+  box-shadow: 0 8px 32px -8px oklch(0.22 0.04 265 / 0.18);
 }
 
 /* Concrete texture used on hero / auth backgrounds */

@@ -30,6 +30,7 @@ import { Route as AuthenticatedSettingsDeleteAccountRouteImport } from './routes
 import { Route as AuthenticatedSettingsContactRouteImport } from './routes/_authenticated/settings.contact'
 import { Route as AuthenticatedSettingsChangePasswordRouteImport } from './routes/_authenticated/settings.change-password'
 import { Route as AuthenticatedSettingsAboutRouteImport } from './routes/_authenticated/settings.about'
+import { Route as AuthenticatedMaterialsIdRouteImport } from './routes/_authenticated/materials.$id'
 import { Route as AuthenticatedDonationsNewRouteImport } from './routes/_authenticated/donations.new'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedAdminTransactionsRouteImport } from './routes/_authenticated/admin.transactions'
@@ -37,6 +38,7 @@ import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin.reports'
 import { Route as AuthenticatedAdminMaterialsRouteImport } from './routes/_authenticated/admin.materials'
 import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
+import { Route as AuthenticatedMaterialsIdIndexRouteImport } from './routes/_authenticated/materials.$id.index'
 import { Route as AuthenticatedMaterialsIdEditRouteImport } from './routes/_authenticated/materials.$id.edit'
 
 const AuthRoute = AuthRouteImport.update({
@@ -154,6 +156,12 @@ const AuthenticatedSettingsAboutRoute =
     path: '/about',
     getParentRoute: () => AuthenticatedSettingsRoute,
   } as any)
+const AuthenticatedMaterialsIdRoute =
+  AuthenticatedMaterialsIdRouteImport.update({
+    id: '/materials/$id',
+    path: '/materials/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDonationsNewRoute =
   AuthenticatedDonationsNewRouteImport.update({
     id: '/donations/new',
@@ -195,11 +203,17 @@ const AuthenticatedAdminCategoriesRoute =
     path: '/categories',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedMaterialsIdIndexRoute =
+  AuthenticatedMaterialsIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedMaterialsIdRoute,
+  } as any)
 const AuthenticatedMaterialsIdEditRoute =
   AuthenticatedMaterialsIdEditRouteImport.update({
-    id: '/materials/$id/edit',
-    path: '/materials/$id/edit',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => AuthenticatedMaterialsIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -218,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
+  '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/settings/about': typeof AuthenticatedSettingsAboutRoute
   '/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/settings/contact': typeof AuthenticatedSettingsContactRoute
@@ -231,6 +246,7 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/transactions/': typeof AuthenticatedTransactionsIndexRoute
   '/materials/$id/edit': typeof AuthenticatedMaterialsIdEditRoute
+  '/materials/$id/': typeof AuthenticatedMaterialsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -259,6 +275,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/transactions': typeof AuthenticatedTransactionsIndexRoute
   '/materials/$id/edit': typeof AuthenticatedMaterialsIdEditRoute
+  '/materials/$id': typeof AuthenticatedMaterialsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -278,6 +295,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/donations/new': typeof AuthenticatedDonationsNewRoute
+  '/_authenticated/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/_authenticated/settings/about': typeof AuthenticatedSettingsAboutRoute
   '/_authenticated/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/_authenticated/settings/contact': typeof AuthenticatedSettingsContactRoute
@@ -291,6 +309,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/transactions/': typeof AuthenticatedTransactionsIndexRoute
   '/_authenticated/materials/$id/edit': typeof AuthenticatedMaterialsIdEditRoute
+  '/_authenticated/materials/$id/': typeof AuthenticatedMaterialsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -310,6 +329,7 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/users'
     | '/donations/new'
+    | '/materials/$id'
     | '/settings/about'
     | '/settings/change-password'
     | '/settings/contact'
@@ -323,6 +343,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/transactions/'
     | '/materials/$id/edit'
+    | '/materials/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -351,6 +372,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/transactions'
     | '/materials/$id/edit'
+    | '/materials/$id'
   id:
     | '__root__'
     | '/'
@@ -369,6 +391,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/transactions'
     | '/_authenticated/admin/users'
     | '/_authenticated/donations/new'
+    | '/_authenticated/materials/$id'
     | '/_authenticated/settings/about'
     | '/_authenticated/settings/change-password'
     | '/_authenticated/settings/contact'
@@ -382,6 +405,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/'
     | '/_authenticated/transactions/'
     | '/_authenticated/materials/$id/edit'
+    | '/_authenticated/materials/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -540,6 +564,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsAboutRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
     }
+    '/_authenticated/materials/$id': {
+      id: '/_authenticated/materials/$id'
+      path: '/materials/$id'
+      fullPath: '/materials/$id'
+      preLoaderRoute: typeof AuthenticatedMaterialsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/donations/new': {
       id: '/_authenticated/donations/new'
       path: '/donations/new'
@@ -589,12 +620,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/materials/$id/': {
+      id: '/_authenticated/materials/$id/'
+      path: '/'
+      fullPath: '/materials/$id/'
+      preLoaderRoute: typeof AuthenticatedMaterialsIdIndexRouteImport
+      parentRoute: typeof AuthenticatedMaterialsIdRoute
+    }
     '/_authenticated/materials/$id/edit': {
       id: '/_authenticated/materials/$id/edit'
-      path: '/materials/$id/edit'
+      path: '/edit'
       fullPath: '/materials/$id/edit'
       preLoaderRoute: typeof AuthenticatedMaterialsIdEditRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedMaterialsIdRoute
     }
   }
 }
@@ -649,6 +687,22 @@ const AuthenticatedSettingsRouteWithChildren =
     AuthenticatedSettingsRouteChildren,
   )
 
+interface AuthenticatedMaterialsIdRouteChildren {
+  AuthenticatedMaterialsIdEditRoute: typeof AuthenticatedMaterialsIdEditRoute
+  AuthenticatedMaterialsIdIndexRoute: typeof AuthenticatedMaterialsIdIndexRoute
+}
+
+const AuthenticatedMaterialsIdRouteChildren: AuthenticatedMaterialsIdRouteChildren =
+  {
+    AuthenticatedMaterialsIdEditRoute: AuthenticatedMaterialsIdEditRoute,
+    AuthenticatedMaterialsIdIndexRoute: AuthenticatedMaterialsIdIndexRoute,
+  }
+
+const AuthenticatedMaterialsIdRouteWithChildren =
+  AuthenticatedMaterialsIdRoute._addFileChildren(
+    AuthenticatedMaterialsIdRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -656,11 +710,11 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
   AuthenticatedDonationsNewRoute: typeof AuthenticatedDonationsNewRoute
+  AuthenticatedMaterialsIdRoute: typeof AuthenticatedMaterialsIdRouteWithChildren
   AuthenticatedTransactionsIdRoute: typeof AuthenticatedTransactionsIdRoute
   AuthenticatedDonationsIndexRoute: typeof AuthenticatedDonationsIndexRoute
   AuthenticatedMaterialsIndexRoute: typeof AuthenticatedMaterialsIndexRoute
   AuthenticatedTransactionsIndexRoute: typeof AuthenticatedTransactionsIndexRoute
-  AuthenticatedMaterialsIdEditRoute: typeof AuthenticatedMaterialsIdEditRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -670,11 +724,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
   AuthenticatedDonationsNewRoute: AuthenticatedDonationsNewRoute,
+  AuthenticatedMaterialsIdRoute: AuthenticatedMaterialsIdRouteWithChildren,
   AuthenticatedTransactionsIdRoute: AuthenticatedTransactionsIdRoute,
   AuthenticatedDonationsIndexRoute: AuthenticatedDonationsIndexRoute,
   AuthenticatedMaterialsIndexRoute: AuthenticatedMaterialsIndexRoute,
   AuthenticatedTransactionsIndexRoute: AuthenticatedTransactionsIndexRoute,
-  AuthenticatedMaterialsIdEditRoute: AuthenticatedMaterialsIdEditRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

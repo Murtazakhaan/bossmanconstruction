@@ -44,7 +44,7 @@ function MaterialDetail() {
     enabled: !!(m as any)?.contractor_id,
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("profiles")
+        .from("public_profiles" as any)
         .select("full_name, org_name")
         .eq("id", (m as any).contractor_id)
         .maybeSingle();

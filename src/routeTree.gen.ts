@@ -16,9 +16,9 @@ import { Route as AuthenticatedTransactionsRouteImport } from './routes/_authent
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedMaterialsRouteImport } from './routes/_authenticated/materials'
-import { Route as AuthenticatedDonationsRouteImport } from './routes/_authenticated/donations'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedDonationsIndexRouteImport } from './routes/_authenticated/donations.index'
 import { Route as AuthenticatedTransactionsIdRouteImport } from './routes/_authenticated/transactions.$id'
 import { Route as AuthenticatedMaterialsIdRouteImport } from './routes/_authenticated/materials.$id'
 import { Route as AuthenticatedDonationsNewRouteImport } from './routes/_authenticated/donations.new'
@@ -58,11 +58,6 @@ const AuthenticatedMaterialsRoute = AuthenticatedMaterialsRouteImport.update({
   path: '/materials',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedDonationsRoute = AuthenticatedDonationsRouteImport.update({
-  id: '/donations',
-  path: '/donations',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -73,6 +68,12 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDonationsIndexRoute =
+  AuthenticatedDonationsIndexRouteImport.update({
+    id: '/donations/',
+    path: '/donations/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedTransactionsIdRoute =
   AuthenticatedTransactionsIdRouteImport.update({
     id: '/$id',
@@ -87,9 +88,9 @@ const AuthenticatedMaterialsIdRoute =
   } as any)
 const AuthenticatedDonationsNewRoute =
   AuthenticatedDonationsNewRouteImport.update({
-    id: '/new',
-    path: '/new',
-    getParentRoute: () => AuthenticatedDonationsRoute,
+    id: '/donations/new',
+    path: '/donations/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -97,7 +98,6 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/donations': typeof AuthenticatedDonationsRouteWithChildren
   '/materials': typeof AuthenticatedMaterialsRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
@@ -105,13 +105,13 @@ export interface FileRoutesByFullPath {
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
+  '/donations/': typeof AuthenticatedDonationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/donations': typeof AuthenticatedDonationsRouteWithChildren
   '/materials': typeof AuthenticatedMaterialsRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
@@ -119,6 +119,7 @@ export interface FileRoutesByTo {
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
+  '/donations': typeof AuthenticatedDonationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -127,7 +128,6 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/donations': typeof AuthenticatedDonationsRouteWithChildren
   '/_authenticated/materials': typeof AuthenticatedMaterialsRouteWithChildren
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
@@ -135,6 +135,7 @@ export interface FileRoutesById {
   '/_authenticated/donations/new': typeof AuthenticatedDonationsNewRoute
   '/_authenticated/materials/$id': typeof AuthenticatedMaterialsIdRoute
   '/_authenticated/transactions/$id': typeof AuthenticatedTransactionsIdRoute
+  '/_authenticated/donations/': typeof AuthenticatedDonationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -143,7 +144,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/admin'
     | '/dashboard'
-    | '/donations'
     | '/materials'
     | '/profile'
     | '/reports'
@@ -151,13 +151,13 @@ export interface FileRouteTypes {
     | '/donations/new'
     | '/materials/$id'
     | '/transactions/$id'
+    | '/donations/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/admin'
     | '/dashboard'
-    | '/donations'
     | '/materials'
     | '/profile'
     | '/reports'
@@ -165,6 +165,7 @@ export interface FileRouteTypes {
     | '/donations/new'
     | '/materials/$id'
     | '/transactions/$id'
+    | '/donations'
   id:
     | '__root__'
     | '/'
@@ -172,7 +173,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
-    | '/_authenticated/donations'
     | '/_authenticated/materials'
     | '/_authenticated/profile'
     | '/_authenticated/reports'
@@ -180,6 +180,7 @@ export interface FileRouteTypes {
     | '/_authenticated/donations/new'
     | '/_authenticated/materials/$id'
     | '/_authenticated/transactions/$id'
+    | '/_authenticated/donations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -239,13 +240,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMaterialsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/donations': {
-      id: '/_authenticated/donations'
-      path: '/donations'
-      fullPath: '/donations'
-      preLoaderRoute: typeof AuthenticatedDonationsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -258,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/donations/': {
+      id: '/_authenticated/donations/'
+      path: '/donations'
+      fullPath: '/donations/'
+      preLoaderRoute: typeof AuthenticatedDonationsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/transactions/$id': {
@@ -276,27 +277,13 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/donations/new': {
       id: '/_authenticated/donations/new'
-      path: '/new'
+      path: '/donations/new'
       fullPath: '/donations/new'
       preLoaderRoute: typeof AuthenticatedDonationsNewRouteImport
-      parentRoute: typeof AuthenticatedDonationsRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
-
-interface AuthenticatedDonationsRouteChildren {
-  AuthenticatedDonationsNewRoute: typeof AuthenticatedDonationsNewRoute
-}
-
-const AuthenticatedDonationsRouteChildren: AuthenticatedDonationsRouteChildren =
-  {
-    AuthenticatedDonationsNewRoute: AuthenticatedDonationsNewRoute,
-  }
-
-const AuthenticatedDonationsRouteWithChildren =
-  AuthenticatedDonationsRoute._addFileChildren(
-    AuthenticatedDonationsRouteChildren,
-  )
 
 interface AuthenticatedMaterialsRouteChildren {
   AuthenticatedMaterialsIdRoute: typeof AuthenticatedMaterialsIdRoute
@@ -329,21 +316,23 @@ const AuthenticatedTransactionsRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedDonationsRoute: typeof AuthenticatedDonationsRouteWithChildren
   AuthenticatedMaterialsRoute: typeof AuthenticatedMaterialsRouteWithChildren
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRouteWithChildren
+  AuthenticatedDonationsNewRoute: typeof AuthenticatedDonationsNewRoute
+  AuthenticatedDonationsIndexRoute: typeof AuthenticatedDonationsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedDonationsRoute: AuthenticatedDonationsRouteWithChildren,
   AuthenticatedMaterialsRoute: AuthenticatedMaterialsRouteWithChildren,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedTransactionsRoute: AuthenticatedTransactionsRouteWithChildren,
+  AuthenticatedDonationsNewRoute: AuthenticatedDonationsNewRoute,
+  AuthenticatedDonationsIndexRoute: AuthenticatedDonationsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

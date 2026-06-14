@@ -10,6 +10,17 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { MaterialThumb } from "@/components/material-thumb";
 import { Plus, Pencil, Trash2, Package } from "lucide-react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/donations/")({
   component: DonationsPage,
@@ -34,7 +45,6 @@ function DonationsPage() {
   });
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this donation? This cannot be undone.")) return;
     const { error } = await supabase.from("materials").delete().eq("id", id);
     if (error) {
       toast.error(error.message);
@@ -120,9 +130,30 @@ function DonationsPage() {
                       <Pencil className="h-4 w-4" /> Edit
                     </Link>
                   </Button>
-                  <Button type="button" variant="destructive" size="icon" onClick={() => handleDelete(m.id)} aria-label={`Delete ${m.title}`}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button type="button" variant="destructive" size="icon" aria-label={`Delete ${m.title}`}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete this donation?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          "{m.title}" will be permanently removed. This cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDelete(m.id)}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </CardContent>
             </Card>

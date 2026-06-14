@@ -12,6 +12,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 import { MaterialPhotoUpload } from "@/components/material-photo-upload";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/materials/$id/edit")({
   component: EditMaterial,
@@ -80,7 +91,6 @@ function EditMaterial() {
   }
 
   async function remove() {
-    if (!confirm("Delete this donation? This cannot be undone.")) return;
     setDeleting(true);
     const { error } = await supabase.from("materials").delete().eq("id", id);
     setDeleting(false);
@@ -147,9 +157,30 @@ function EditMaterial() {
               {user ? <MaterialPhotoUpload userId={user.id} value={photos} onChange={setPhotos} /> : null}
             </div>
             <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between">
-              <Button type="button" variant="destructive" onClick={remove} disabled={deleting} className="w-full sm:w-auto">
-                {deleting ? "Deleting…" : "Delete donation"}
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button type="button" variant="destructive" disabled={deleting} className="w-full sm:w-auto">
+                    {deleting ? "Deleting…" : "Delete donation"}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete this donation?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will permanently remove the donation. This cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={remove}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
               <Button type="submit" disabled={saving} className="w-full sm:w-auto">{saving ? "Saving…" : "Save changes"}</Button>
             </div>
           </form>

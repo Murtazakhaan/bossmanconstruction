@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Package, ListChecks, HandHeart, ArrowRight } from "lucide-react";
+import { Inbox, ListChecks, Gift, ArrowRight } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
@@ -70,15 +70,15 @@ function Dashboard() {
         description="Here's a snapshot of your activity in BCM."
         actions={
           isContractor ? (
-            <Button asChild>
+          <Button asChild>
               <Link to="/donations/new">
-                <HandHeart className="mr-2 h-4 w-4" /> Post a donation
+                <Gift className="mr-2 h-4 w-4" /> Post a donation
               </Link>
             </Button>
           ) : (
             <Button asChild>
               <Link to="/materials">
-                <Package className="mr-2 h-4 w-4" /> Browse materials
+                <Inbox className="mr-2 h-4 w-4" /> Browse materials
               </Link>
             </Button>
           )
@@ -89,12 +89,12 @@ function Dashboard() {
         <StatCard
           label="Materials available"
           value={stats?.availableCount ?? "-"}
-          icon={Package}
+          icon={Inbox}
           to="/materials"
         />
         {isContractor && (
           <>
-            <StatCard label="Your donations" value={stats?.myDonationCount ?? "-"} icon={HandHeart} to="/donations" />
+            <StatCard label="Your donations" value={stats?.myDonationCount ?? "-"} icon={Gift} to="/donations" />
             <StatCard
               label="Lifetime value donated"
               value={

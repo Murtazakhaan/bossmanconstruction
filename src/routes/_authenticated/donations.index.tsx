@@ -8,7 +8,7 @@ import { StatusBadge } from "@/components/status-badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { MaterialThumb } from "@/components/material-thumb";
-import { Plus, Pencil, Trash2, Package } from "lucide-react";
+import { Plus, Pencil, Trash2, Gift } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -78,7 +78,7 @@ function DonationsPage() {
       ) : !materials?.length ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <Package className="mb-3 h-10 w-10 text-concrete-dark" />
+            <Gift className="mb-3 h-10 w-10 text-concrete-dark" />
             <h2 className="font-display text-lg font-semibold uppercase">No donations yet</h2>
             <p className="mt-1 max-w-sm text-sm text-muted-foreground">
               Post your first material donation to start routing surplus to the community.

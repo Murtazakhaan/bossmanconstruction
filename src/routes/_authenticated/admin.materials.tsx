@@ -1,13 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/status-badge";
 import { ConfirmDelete } from "@/components/admin/confirm-delete";
+import { MaterialThumb } from "@/components/material-thumb";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin/materials")({
@@ -21,7 +22,7 @@ function MaterialsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("materials")
-        .select("id, title, status, quantity, unit, total_value_usd, pickup_city, pickup_state, created_at, material_categories(name)")
+        .select("id, title, status, quantity, unit, total_value_usd, pickup_city, pickup_state, created_at, photo_urls, material_categories(name)")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data ?? [];
@@ -46,44 +47,47 @@ function MaterialsPage() {
       {isLoading ? (
         <div className="text-sm text-muted-foreground">Loading…</div>
       ) : (
-        <Card>
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b border-border bg-muted/40 text-left text-[11px] uppercase tracking-wider text-muted-foreground">
-                  <tr>
-                    <th className="px-4 py-3">Title</th>
-                    <th className="px-4 py-3">Category</th>
-                    <th className="px-4 py-3">Qty</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Location</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(data ?? []).map((m: any) => (
-                    <tr key={m.id} className="border-b border-border last:border-0">
-                      <td className="px-4 py-3 font-medium">{m.title}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{m.material_categories?.name ?? "—"}</td>
-                      <td className="px-4 py-3">{Number(m.quantity)} {m.unit}</td>
-                      <td className="px-4 py-3"><StatusBadge status={m.status} /></td>
-                      <td className="px-4 py-3 text-muted-foreground">{m.pickup_city ? `${m.pickup_city}, ${m.pickup_state}` : "—"}</td>
-                      <td className="px-4 py-3 text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button asChild variant="outline" size="sm">
-                            <a href={`/materials/${m.id}/edit`}><Pencil className="h-3.5 w-3.5" /></a>
-                          </Button>
-                          <ConfirmDelete onConfirm={() => del.mutate(m.id)} title="Delete this material?" description="This cannot be undone." />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                  {!data?.length && <tr><td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">No materials.</td></tr>}
-                </tbody>
-              </table>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {(data ?? []).map((m: any) => (
+            <Card key={m.id} className="overflow-hidden">
+              <MaterialThumb paths={m.photo_urls} alt={m.title} />
+              <CardContent className="space-y-3 p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h3 className="text-sm font-semibold">{m.title}</h3>
+                    <p className="text-xs text-muted-foreground">{m.material_categories?.name ?? "—"}</p>
+                  </div>
+                  <StatusBadge status={m.status} />
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  <span className="font-medium text-foreground">{Number(m.quantity)} {m.unit}</span>
+                  {m.pickup_city ? ` · ${m.pickup_city}, ${m.pickup_state}` : null}
+                </div>
+                <div className="flex gap-2">
+                  <Button asChild variant="outline" size="sm" className="flex-1">
+                    <Link to="/materials/$id" params={{ id: m.id }}>
+                      <Pencil className="mr-1 h-3.5 w-3.5" /> Edit
+                    </Link>
+                  </Button>
+                  <ConfirmDelete
+                    onConfirm={() => del.mutate(m.id)}
+                    title="Delete this material?"
+                    description="This cannot be undone."
+                  >
+                    <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10">
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </ConfirmDelete>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+          {!data?.length && (
+            <div className="col-span-full py-12 text-center text-sm text-muted-foreground">
+              No materials yet.
             </div>
-          </CardContent>
-        </Card>
+          )}
+        </div>
       )}
     </AdminShell>
   );

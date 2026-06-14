@@ -202,12 +202,17 @@ function SignUpForm({ defaultRole, onSwitch }: { defaultRole: "contractor" | "re
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [role, setRole] = useState<"contractor" | "recipient">(defaultRole);
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -270,22 +275,28 @@ function SignUpForm({ defaultRole, onSwitch }: { defaultRole: "contractor" | "re
         <Input id="fullName" required value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="name" className="h-12 text-base" placeholder="Jane Smith" />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="email2">Email</Label>
-        <Input id="email2" type="email" inputMode="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 text-base" placeholder="you@example.com" />
+        <Label htmlFor="email2">Email Address</Label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input id="email2" type="email" inputMode="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 pl-10 text-base" placeholder="you@example.com" />
+        </div>
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="password2">Create a password</Label>
+        <Label htmlFor="password2">Password</Label>
         <PasswordInput id="password2" value={password} onChange={setPassword} autoComplete="new-password" />
-        <p className="text-xs text-muted-foreground">Use at least 8 characters.</p>
       </div>
-      <Button type="submit" className="h-12 w-full text-base font-semibold" disabled={loading}>
+      <div className="space-y-1.5">
+        <Label htmlFor="confirmPassword">Confirm Password</Label>
+        <PasswordInput id="confirmPassword" value={confirmPassword} onChange={setConfirmPassword} autoComplete="new-password" />
+      </div>
+      <Button type="submit" className="h-12 w-full text-base font-semibold bg-[#0a0f2c] hover:bg-[#0a0f2c]/90" disabled={loading}>
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        Create my account
+        Sign Up
       </Button>
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <button type="button" onClick={onSwitch} className="font-semibold text-primary underline-offset-4 hover:underline">
-          Sign in
+        <button type="button" onClick={onSwitch} className="font-semibold text-foreground underline-offset-4 hover:underline">
+          Sign In
         </button>
       </p>
     </form>

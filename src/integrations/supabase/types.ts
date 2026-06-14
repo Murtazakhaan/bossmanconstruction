@@ -177,10 +177,14 @@ export type Database = {
           bio: string | null
           city: string | null
           created_at: string
+          donor_type: string | null
+          donor_type_other: string | null
           full_name: string | null
           id: string
           org_name: string | null
           phone: string | null
+          recipient_type: string | null
+          recipient_type_other: string | null
           state: string | null
           updated_at: string
           zip: string | null
@@ -190,10 +194,14 @@ export type Database = {
           bio?: string | null
           city?: string | null
           created_at?: string
+          donor_type?: string | null
+          donor_type_other?: string | null
           full_name?: string | null
           id: string
           org_name?: string | null
           phone?: string | null
+          recipient_type?: string | null
+          recipient_type_other?: string | null
           state?: string | null
           updated_at?: string
           zip?: string | null
@@ -203,10 +211,14 @@ export type Database = {
           bio?: string | null
           city?: string | null
           created_at?: string
+          donor_type?: string | null
+          donor_type_other?: string | null
           full_name?: string | null
           id?: string
           org_name?: string | null
           phone?: string | null
+          recipient_type?: string | null
+          recipient_type_other?: string | null
           state?: string | null
           updated_at?: string
           zip?: string | null

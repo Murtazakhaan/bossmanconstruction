@@ -7,7 +7,7 @@ import { StatusBadge } from "@/components/status-badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-export const Route = createFileRoute("/_authenticated/transactions")({
+export const Route = createFileRoute("/_authenticated/transactions/")({
   component: TransactionsList,
 });
 

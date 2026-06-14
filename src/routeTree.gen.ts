@@ -12,12 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedTransactionsRouteImport } from './routes/_authenticated/transactions'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
-import { Route as AuthenticatedMaterialsRouteImport } from './routes/_authenticated/materials'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedTransactionsIndexRouteImport } from './routes/_authenticated/transactions.index'
+import { Route as AuthenticatedMaterialsIndexRouteImport } from './routes/_authenticated/materials.index'
 import { Route as AuthenticatedDonationsIndexRouteImport } from './routes/_authenticated/donations.index'
 import { Route as AuthenticatedTransactionsIdRouteImport } from './routes/_authenticated/transactions.$id'
 import { Route as AuthenticatedMaterialsIdRouteImport } from './routes/_authenticated/materials.$id'
@@ -37,12 +37,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedTransactionsRoute =
-  AuthenticatedTransactionsRouteImport.update({
-    id: '/transactions',
-    path: '/transactions',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
@@ -51,11 +45,6 @@ const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedMaterialsRoute = AuthenticatedMaterialsRouteImport.update({
-  id: '/materials',
-  path: '/materials',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -68,6 +57,18 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTransactionsIndexRoute =
+  AuthenticatedTransactionsIndexRouteImport.update({
+    id: '/transactions/',
+    path: '/transactions/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMaterialsIndexRoute =
+  AuthenticatedMaterialsIndexRouteImport.update({
+    id: '/materials/',
+    path: '/materials/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDonationsIndexRoute =
   AuthenticatedDonationsIndexRouteImport.update({
     id: '/donations/',
@@ -76,15 +77,15 @@ const AuthenticatedDonationsIndexRoute =
   } as any)
 const AuthenticatedTransactionsIdRoute =
   AuthenticatedTransactionsIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedTransactionsRoute,
+    id: '/transactions/$id',
+    path: '/transactions/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMaterialsIdRoute =
   AuthenticatedMaterialsIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedMaterialsRoute,
+    id: '/materials/$id',
+    path: '/materials/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDonationsNewRoute =
   AuthenticatedDonationsNewRouteImport.update({
@@ -98,28 +99,28 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/materials': typeof AuthenticatedMaterialsRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
-  '/transactions': typeof AuthenticatedTransactionsRouteWithChildren
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/donations/': typeof AuthenticatedDonationsIndexRoute
+  '/materials/': typeof AuthenticatedMaterialsIndexRoute
+  '/transactions/': typeof AuthenticatedTransactionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/materials': typeof AuthenticatedMaterialsRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
-  '/transactions': typeof AuthenticatedTransactionsRouteWithChildren
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/donations': typeof AuthenticatedDonationsIndexRoute
+  '/materials': typeof AuthenticatedMaterialsIndexRoute
+  '/transactions': typeof AuthenticatedTransactionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -128,14 +129,14 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/materials': typeof AuthenticatedMaterialsRouteWithChildren
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
-  '/_authenticated/transactions': typeof AuthenticatedTransactionsRouteWithChildren
   '/_authenticated/donations/new': typeof AuthenticatedDonationsNewRoute
   '/_authenticated/materials/$id': typeof AuthenticatedMaterialsIdRoute
   '/_authenticated/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/_authenticated/donations/': typeof AuthenticatedDonationsIndexRoute
+  '/_authenticated/materials/': typeof AuthenticatedMaterialsIndexRoute
+  '/_authenticated/transactions/': typeof AuthenticatedTransactionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -144,28 +145,28 @@ export interface FileRouteTypes {
     | '/auth'
     | '/admin'
     | '/dashboard'
-    | '/materials'
     | '/profile'
     | '/reports'
-    | '/transactions'
     | '/donations/new'
     | '/materials/$id'
     | '/transactions/$id'
     | '/donations/'
+    | '/materials/'
+    | '/transactions/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/admin'
     | '/dashboard'
-    | '/materials'
     | '/profile'
     | '/reports'
-    | '/transactions'
     | '/donations/new'
     | '/materials/$id'
     | '/transactions/$id'
     | '/donations'
+    | '/materials'
+    | '/transactions'
   id:
     | '__root__'
     | '/'
@@ -173,14 +174,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
-    | '/_authenticated/materials'
     | '/_authenticated/profile'
     | '/_authenticated/reports'
-    | '/_authenticated/transactions'
     | '/_authenticated/donations/new'
     | '/_authenticated/materials/$id'
     | '/_authenticated/transactions/$id'
     | '/_authenticated/donations/'
+    | '/_authenticated/materials/'
+    | '/_authenticated/transactions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -212,13 +213,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/transactions': {
-      id: '/_authenticated/transactions'
-      path: '/transactions'
-      fullPath: '/transactions'
-      preLoaderRoute: typeof AuthenticatedTransactionsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/reports': {
       id: '/_authenticated/reports'
       path: '/reports'
@@ -231,13 +225,6 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/materials': {
-      id: '/_authenticated/materials'
-      path: '/materials'
-      fullPath: '/materials'
-      preLoaderRoute: typeof AuthenticatedMaterialsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -254,6 +241,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/transactions/': {
+      id: '/_authenticated/transactions/'
+      path: '/transactions'
+      fullPath: '/transactions/'
+      preLoaderRoute: typeof AuthenticatedTransactionsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/materials/': {
+      id: '/_authenticated/materials/'
+      path: '/materials'
+      fullPath: '/materials/'
+      preLoaderRoute: typeof AuthenticatedMaterialsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/donations/': {
       id: '/_authenticated/donations/'
       path: '/donations'
@@ -263,17 +264,17 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/transactions/$id': {
       id: '/_authenticated/transactions/$id'
-      path: '/$id'
+      path: '/transactions/$id'
       fullPath: '/transactions/$id'
       preLoaderRoute: typeof AuthenticatedTransactionsIdRouteImport
-      parentRoute: typeof AuthenticatedTransactionsRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/materials/$id': {
       id: '/_authenticated/materials/$id'
-      path: '/$id'
+      path: '/materials/$id'
       fullPath: '/materials/$id'
       preLoaderRoute: typeof AuthenticatedMaterialsIdRouteImport
-      parentRoute: typeof AuthenticatedMaterialsRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/donations/new': {
       id: '/_authenticated/donations/new'
@@ -285,54 +286,30 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthenticatedMaterialsRouteChildren {
-  AuthenticatedMaterialsIdRoute: typeof AuthenticatedMaterialsIdRoute
-}
-
-const AuthenticatedMaterialsRouteChildren: AuthenticatedMaterialsRouteChildren =
-  {
-    AuthenticatedMaterialsIdRoute: AuthenticatedMaterialsIdRoute,
-  }
-
-const AuthenticatedMaterialsRouteWithChildren =
-  AuthenticatedMaterialsRoute._addFileChildren(
-    AuthenticatedMaterialsRouteChildren,
-  )
-
-interface AuthenticatedTransactionsRouteChildren {
-  AuthenticatedTransactionsIdRoute: typeof AuthenticatedTransactionsIdRoute
-}
-
-const AuthenticatedTransactionsRouteChildren: AuthenticatedTransactionsRouteChildren =
-  {
-    AuthenticatedTransactionsIdRoute: AuthenticatedTransactionsIdRoute,
-  }
-
-const AuthenticatedTransactionsRouteWithChildren =
-  AuthenticatedTransactionsRoute._addFileChildren(
-    AuthenticatedTransactionsRouteChildren,
-  )
-
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedMaterialsRoute: typeof AuthenticatedMaterialsRouteWithChildren
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
-  AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRouteWithChildren
   AuthenticatedDonationsNewRoute: typeof AuthenticatedDonationsNewRoute
+  AuthenticatedMaterialsIdRoute: typeof AuthenticatedMaterialsIdRoute
+  AuthenticatedTransactionsIdRoute: typeof AuthenticatedTransactionsIdRoute
   AuthenticatedDonationsIndexRoute: typeof AuthenticatedDonationsIndexRoute
+  AuthenticatedMaterialsIndexRoute: typeof AuthenticatedMaterialsIndexRoute
+  AuthenticatedTransactionsIndexRoute: typeof AuthenticatedTransactionsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedMaterialsRoute: AuthenticatedMaterialsRouteWithChildren,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
-  AuthenticatedTransactionsRoute: AuthenticatedTransactionsRouteWithChildren,
   AuthenticatedDonationsNewRoute: AuthenticatedDonationsNewRoute,
+  AuthenticatedMaterialsIdRoute: AuthenticatedMaterialsIdRoute,
+  AuthenticatedTransactionsIdRoute: AuthenticatedTransactionsIdRoute,
   AuthenticatedDonationsIndexRoute: AuthenticatedDonationsIndexRoute,
+  AuthenticatedMaterialsIndexRoute: AuthenticatedMaterialsIndexRoute,
+  AuthenticatedTransactionsIndexRoute: AuthenticatedTransactionsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

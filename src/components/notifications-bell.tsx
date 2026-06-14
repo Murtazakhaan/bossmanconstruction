@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { Bell } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,6 +24,7 @@ type Notification = {
 
 export function NotificationsBell() {
   const { user } = useCurrentUser();
+  const navigate = useNavigate();
   const [items, setItems] = useState<Notification[]>([]);
   const [open, setOpen] = useState(false);
 
@@ -149,16 +150,16 @@ export function NotificationsBell() {
                 return (
                   <li key={n.id}>
                     {n.link ? (
-                      <Link
-                        to={n.link}
+                      <button
                         onClick={() => {
                           markOneRead(n.id);
                           setOpen(false);
+                          navigate({ to: n.link! });
                         }}
-                        className="block"
+                        className="block w-full"
                       >
                         {content}
-                      </Link>
+                      </button>
                     ) : (
                       <button
                         onClick={() => markOneRead(n.id)}

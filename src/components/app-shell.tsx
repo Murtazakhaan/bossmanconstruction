@@ -1,8 +1,9 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import {
   LayoutDashboard,
+  Inbox,
+  Gift,
   Package,
-  HandHeart,
   ListChecks,
   FileBarChart,
   Settings as SettingsIcon,
@@ -32,8 +33,8 @@ type Item = {
 
 const USER_ITEMS: Item[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/materials", label: "Materials", icon: Package },
-  { to: "/donations", label: "My Donations", icon: HandHeart, roles: ["contractor"] },
+  { to: "/materials", label: "Materials", icon: Inbox },
+  { to: "/donations", label: "My Donations", icon: Gift, roles: ["contractor"] },
   { to: "/transactions", label: "Transactions", icon: ListChecks },
   { to: "/reports", label: "Reports", icon: FileBarChart, roles: ["contractor"] },
   { to: "/settings", label: "Settings", icon: SettingsIcon },

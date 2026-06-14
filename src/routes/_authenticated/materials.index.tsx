@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Package, Plus } from "lucide-react";
+import { Inbox, Plus } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -50,7 +50,7 @@ function MaterialsList() {
       ) : !materials?.length ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <Package className="mb-3 h-10 w-10 text-concrete-dark" />
+            <Inbox className="mb-3 h-10 w-10 text-concrete-dark" />
             <h3 className="font-display text-lg font-semibold uppercase">No materials yet</h3>
             <p className="mt-1 max-w-sm text-sm text-muted-foreground">
               Check back soon - new surplus is posted by contractors every week.

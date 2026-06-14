@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.tg_adjust_material_quantity() FROM PUBLIC, anon, authenticated;

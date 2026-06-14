@@ -73,13 +73,13 @@ function Dashboard() {
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard
           label="Materials available"
-          value={stats?.availableCount ?? "—"}
+          value={stats?.availableCount ?? "-"}
           icon={Package}
           to="/materials"
         />
         {isContractor && (
           <>
-            <StatCard label="Your donations" value={stats?.myDonationCount ?? "—"} icon={HandHeart} to="/donations" />
+            <StatCard label="Your donations" value={stats?.myDonationCount ?? "-"} icon={HandHeart} to="/donations" />
             <StatCard
               label="Lifetime value donated"
               value={
@@ -87,7 +87,7 @@ function Dashboard() {
                   ? new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(
                       stats.totalDonatedValue,
                     )
-                  : "—"
+                  : "-"
               }
               icon={ListChecks}
               to="/reports"
@@ -95,7 +95,7 @@ function Dashboard() {
           </>
         )}
         {!isContractor && (
-          <StatCard label="Your transactions" value={stats?.recent.length ?? "—"} icon={ListChecks} to="/transactions" />
+          <StatCard label="Your transactions" value={stats?.recent.length ?? "-"} icon={ListChecks} to="/transactions" />
         )}
       </div>
 

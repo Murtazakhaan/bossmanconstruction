@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
-import { Loader2, ArrowLeft, Eye, EyeOff, HardHat, Home, CheckCircle2 } from "lucide-react";
+import { Loader2, ArrowLeft, Eye, EyeOff, HardHat, Home, CheckCircle2, Mail, Lock } from "lucide-react";
 
 const searchSchema = z.object({
   mode: z.enum(["signin", "signup"]).optional(),
@@ -44,28 +44,21 @@ function AuthPage() {
           <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" /> Back
           </Link>
-          <BcmLogo variant="mark" />
         </div>
 
-        <div className="mt-8 sm:mt-10">
-          <h1 className="font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">
-            {tab === "signin" ? "Welcome back" : "Let's get started"}
+        <div className="mt-6 flex justify-center">
+          <BcmLogo variant="full" className="h-24 w-auto sm:h-28" />
+        </div>
+
+        <div className="mt-8">
+          <h1 className="text-2xl font-bold tracking-tight">
+            {tab === "signin" ? "Sign In" : "Sign Up"}
           </h1>
-          <p className="mt-2 text-[15px] text-muted-foreground">
-            {tab === "signin"
-              ? "Sign in to manage your donations and pickups."
-              : "Create your free account in under a minute."}
-          </p>
-        </div>
-
-        <div className="mt-6 space-y-3">
-          <GoogleButton />
-          <div className="relative py-1 text-center">
-            <span className="relative z-10 bg-background px-3 text-xs uppercase tracking-wider text-muted-foreground">
-              or with email
-            </span>
-            <div className="absolute inset-x-0 top-1/2 h-px bg-border" />
-          </div>
+          {tab === "signup" && (
+            <p className="mt-1 text-[15px] text-muted-foreground">
+              Who are you signing up as? Select your role to continue.
+            </p>
+          )}
         </div>
 
         {tab === "signin" ? (
@@ -73,6 +66,16 @@ function AuthPage() {
         ) : (
           <SignUpForm defaultRole={role ?? "contractor"} onSwitch={() => setTab("signin")} />
         )}
+
+        <div className="mt-6 flex items-center justify-center gap-4">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-xs uppercase tracking-wider text-muted-foreground">Or continue with</span>
+          <div className="h-px flex-1 bg-border" />
+        </div>
+
+        <div className="mt-4 flex justify-center">
+          <GoogleIconButton />
+        </div>
 
         <p className="mt-auto pt-8 text-center text-[11px] text-muted-foreground">
           By continuing you agree to our Terms and Privacy Policy.
@@ -82,7 +85,7 @@ function AuthPage() {
   );
 }
 
-function GoogleButton() {
+function GoogleIconButton() {
   const [loading, setLoading] = useState(false);
   async function go() {
     setLoading(true);
@@ -96,24 +99,34 @@ function GoogleButton() {
     window.location.href = "/dashboard";
   }
   return (
-    <Button type="button" variant="outline" className="h-12 w-full text-base font-medium" onClick={go} disabled={loading}>
-      {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : (
-        <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.48 12c0-.73.13-1.44.36-2.1V7.07H2.18a11 11 0 0 0 0 9.86l3.66-2.83z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.83C6.71 7.31 9.14 5.38 12 5.38z"/>
+    <button
+      type="button"
+      onClick={go}
+      disabled={loading}
+      className="grid h-12 w-12 place-items-center rounded-full border border-border bg-background text-foreground shadow-sm transition hover:bg-accent disabled:opacity-50"
+      aria-label="Continue with Google"
+    >
+      {loading ? (
+        <Loader2 className="h-5 w-5 animate-spin" />
+      ) : (
+        <svg className="h-5 w-5" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z" />
+          <path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.48 12c0-.73.13-1.44.36-2.1V7.07H2.18a11 11 0 0 0 0 9.86l3.66-2.83z" />
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.83C6.71 7.31 9.14 5.38 12 5.38z" />
         </svg>
       )}
-      Continue with Google
-    </Button>
+    </button>
   );
 }
 
-function PasswordInput({ id, value, onChange, autoComplete }: { id: string; value: string; onChange: (v: string) => void; autoComplete?: string }) {
+function PasswordInput({ id, value, onChange, autoComplete, showLock = true }: { id: string; value: string; onChange: (v: string) => void; autoComplete?: string; showLock?: boolean }) {
   const [show, setShow] = useState(false);
   return (
     <div className="relative">
+      {showLock && (
+        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      )}
       <Input
         id={id}
         type={show ? "text" : "password"}
@@ -122,7 +135,7 @@ function PasswordInput({ id, value, onChange, autoComplete }: { id: string; valu
         value={value}
         onChange={(e) => onChange(e.target.value)}
         autoComplete={autoComplete}
-        className="h-12 pr-11 text-base"
+        className={`h-12 text-base pr-11 ${showLock ? "pl-10" : ""}`}
       />
       <button
         type="button"
@@ -161,23 +174,24 @@ function SignInForm({ onSwitch }: { onSwitch: () => void }) {
   return (
     <form onSubmit={onSubmit} className="mt-5 space-y-4">
       <div className="space-y-1.5">
-        <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" inputMode="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 text-base" placeholder="you@example.com" />
+        <Label htmlFor="email">Email Address</Label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input id="email" type="email" inputMode="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 pl-10 text-base" placeholder="you@example.com" />
+        </div>
       </div>
       <div className="space-y-1.5">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="password">Password</Label>
-        </div>
+        <Label htmlFor="password">Password</Label>
         <PasswordInput id="password" value={password} onChange={setPassword} autoComplete="current-password" />
       </div>
-      <Button type="submit" className="h-12 w-full text-base font-semibold" disabled={loading}>
+      <Button type="submit" className="h-12 w-full text-base font-semibold bg-[#0a0f2c] hover:bg-[#0a0f2c]/90" disabled={loading}>
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        Sign in
+        Sign In
       </Button>
       <p className="text-center text-sm text-muted-foreground">
-        New here?{" "}
-        <button type="button" onClick={onSwitch} className="font-semibold text-primary underline-offset-4 hover:underline">
-          Create an account
+        Don't have an account?{" "}
+        <button type="button" onClick={onSwitch} className="font-semibold text-foreground underline-offset-4 hover:underline">
+          Sign Up
         </button>
       </p>
     </form>
@@ -188,12 +202,17 @@ function SignUpForm({ defaultRole, onSwitch }: { defaultRole: "contractor" | "re
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [role, setRole] = useState<"contractor" | "recipient">(defaultRole);
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -256,22 +275,28 @@ function SignUpForm({ defaultRole, onSwitch }: { defaultRole: "contractor" | "re
         <Input id="fullName" required value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="name" className="h-12 text-base" placeholder="Jane Smith" />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="email2">Email</Label>
-        <Input id="email2" type="email" inputMode="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 text-base" placeholder="you@example.com" />
+        <Label htmlFor="email2">Email Address</Label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input id="email2" type="email" inputMode="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 pl-10 text-base" placeholder="you@example.com" />
+        </div>
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="password2">Create a password</Label>
+        <Label htmlFor="password2">Password</Label>
         <PasswordInput id="password2" value={password} onChange={setPassword} autoComplete="new-password" />
-        <p className="text-xs text-muted-foreground">Use at least 8 characters.</p>
       </div>
-      <Button type="submit" className="h-12 w-full text-base font-semibold" disabled={loading}>
+      <div className="space-y-1.5">
+        <Label htmlFor="confirmPassword">Confirm Password</Label>
+        <PasswordInput id="confirmPassword" value={confirmPassword} onChange={setConfirmPassword} autoComplete="new-password" />
+      </div>
+      <Button type="submit" className="h-12 w-full text-base font-semibold bg-[#0a0f2c] hover:bg-[#0a0f2c]/90" disabled={loading}>
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        Create my account
+        Sign Up
       </Button>
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <button type="button" onClick={onSwitch} className="font-semibold text-primary underline-offset-4 hover:underline">
-          Sign in
+        <button type="button" onClick={onSwitch} className="font-semibold text-foreground underline-offset-4 hover:underline">
+          Sign In
         </button>
       </p>
     </form>

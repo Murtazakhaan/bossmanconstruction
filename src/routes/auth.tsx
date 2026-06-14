@@ -174,23 +174,24 @@ function SignInForm({ onSwitch }: { onSwitch: () => void }) {
   return (
     <form onSubmit={onSubmit} className="mt-5 space-y-4">
       <div className="space-y-1.5">
-        <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" inputMode="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 text-base" placeholder="you@example.com" />
+        <Label htmlFor="email">Email Address</Label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input id="email" type="email" inputMode="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 pl-10 text-base" placeholder="you@example.com" />
+        </div>
       </div>
       <div className="space-y-1.5">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="password">Password</Label>
-        </div>
+        <Label htmlFor="password">Password</Label>
         <PasswordInput id="password" value={password} onChange={setPassword} autoComplete="current-password" />
       </div>
-      <Button type="submit" className="h-12 w-full text-base font-semibold" disabled={loading}>
+      <Button type="submit" className="h-12 w-full text-base font-semibold bg-[#0a0f2c] hover:bg-[#0a0f2c]/90" disabled={loading}>
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        Sign in
+        Sign In
       </Button>
       <p className="text-center text-sm text-muted-foreground">
-        New here?{" "}
-        <button type="button" onClick={onSwitch} className="font-semibold text-primary underline-offset-4 hover:underline">
-          Create an account
+        Don't have an account?{" "}
+        <button type="button" onClick={onSwitch} className="font-semibold text-foreground underline-offset-4 hover:underline">
+          Sign Up
         </button>
       </p>
     </form>

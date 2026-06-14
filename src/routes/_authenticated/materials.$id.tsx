@@ -11,6 +11,8 @@ import { StatusBadge } from "@/components/status-badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
+import { useSignedPhotoUrls } from "@/components/material-photo-upload";
+import { Pencil } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/materials/$id")({
   component: MaterialDetail,
@@ -37,6 +39,8 @@ function MaterialDetail() {
     },
   });
 
+  const photoUrls = useSignedPhotoUrls((m as any)?.photo_urls);
+
   async function request() {
     if (!user || !m) return;
     setSubmitting(true);
@@ -57,16 +61,38 @@ function MaterialDetail() {
 
   if (!m) return <AppShell title="Material"><div className="text-sm text-muted-foreground">Loading…</div></AppShell>;
 
+  const isOwner = user?.id === m.contractor_id;
+
   return (
     <AppShell title="Material">
       <PageHeader
         eyebrow={(m as any).material_categories?.name ?? "Material"}
         title={m.title}
-        actions={<Button variant="outline" asChild><Link to="/materials">← Back</Link></Button>}
+        actions={
+          <div className="flex gap-2">
+            {isOwner ? (
+              <Button asChild>
+                <Link to="/materials/$id/edit" params={{ id: m.id }}>
+                  <Pencil className="mr-2 h-4 w-4" /> Edit
+                </Link>
+              </Button>
+            ) : null}
+            <Button variant="outline" asChild><Link to="/materials">← Back</Link></Button>
+          </div>
+        }
       />
       <div className="grid gap-6 md:grid-cols-3">
         <Card className="md:col-span-2">
           <CardContent className="space-y-4 p-6">
+            {photoUrls.length ? (
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {photoUrls.map((url, i) => (
+                  <a key={i} href={url} target="_blank" rel="noreferrer" className="block aspect-square overflow-hidden rounded-md border border-border">
+                    <img src={url} alt={`${m.title} ${i + 1}`} className="h-full w-full object-cover transition-transform hover:scale-105" />
+                  </a>
+                ))}
+              </div>
+            ) : null}
             <div className="flex items-center justify-between">
               <StatusBadge status={m.status} />
               <span className="text-xs text-muted-foreground">Posted {new Date(m.created_at).toLocaleDateString()}</span>

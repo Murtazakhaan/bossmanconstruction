@@ -240,7 +240,7 @@ function SignUpForm({ defaultRole, onSwitch }: { defaultRole: "contractor" | "re
 
   const roleOptions = [
     { v: "contractor" as const, label: "Donate Materials", sub: "I have materials to donate", Icon: PackageOpen },
-    { v: "recipient" as const, label: "Receive Materials", sub: "Homeowner or nonprofit", Icon: HandHeart },
+    { v: "recipient" as const, label: "Receive Materials", sub: "I need materials\u00A0", Icon: HandHeart },
   ];
 
   return (

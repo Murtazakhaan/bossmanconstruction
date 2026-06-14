@@ -150,16 +150,18 @@ export function NotificationsBell() {
                 return (
                   <li key={n.id}>
                     {n.link ? (
-                      <button
-                        onClick={() => {
+                      <a
+                        href={n.link}
+                        onClick={(e) => {
+                          e.preventDefault();
                           markOneRead(n.id);
                           setOpen(false);
-                          navigate({ to: n.link! });
+                          navigate({ to: n.link as string });
                         }}
-                        className="block w-full"
+                        className="block"
                       >
                         {content}
-                      </button>
+                      </a>
                     ) : (
                       <button
                         onClick={() => markOneRead(n.id)}

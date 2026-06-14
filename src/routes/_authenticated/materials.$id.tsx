@@ -31,8 +31,22 @@ function MaterialDetail() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("materials")
-        .select("*, material_categories(name), profiles!materials_contractor_id_fkey(full_name, org_name)")
+        .select("*, material_categories(name)")
         .eq("id", id)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: donor } = useQuery({
+    queryKey: ["material-donor", (m as any)?.contractor_id],
+    enabled: !!(m as any)?.contractor_id,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("full_name, org_name")
+        .eq("id", (m as any).contractor_id)
         .maybeSingle();
       if (error) throw error;
       return data;

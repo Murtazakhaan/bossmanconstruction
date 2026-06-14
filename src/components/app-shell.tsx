@@ -100,14 +100,8 @@ function SidebarContent() {
 
   return (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
-      <div className="flex items-center gap-3 border-b border-sidebar-border px-5 py-5">
-        <BcmLogo variant="mark" className="bg-sidebar-primary text-sidebar-primary-foreground" />
-        <div className="flex flex-col leading-tight">
-          <span className="font-display text-sm font-bold tracking-wider">BOSSMAN</span>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-sidebar-foreground/60">
-            Construction Mgmt
-          </span>
-        </div>
+      <div className="flex items-center justify-center border-b border-sidebar-border px-5 py-5">
+        <BcmLogo variant="onDark" className="h-14 w-auto" />
       </div>
       <div className="flex-1 overflow-y-auto py-4">
         <NavList />

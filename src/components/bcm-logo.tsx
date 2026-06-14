@@ -1,29 +1,35 @@
-import bcmLogoAsset from "@/assets/bcm-logo.asset.json";
+import lightLogo from "@/assets/bossman-logo-light.png.asset.json";
+import darkLogo from "@/assets/bossman-logo-dark.png.asset.json";
 import { cn } from "@/lib/utils";
 
 type Props = {
   className?: string;
-  variant?: "full" | "mark";
+  /** "full" = responsive size, "mark" = compact. "onDark" forces the light/white logo regardless of theme (use on dark surfaces like the sidebar). */
+  variant?: "full" | "mark" | "onDark";
 };
 
 export function BcmLogo({ className, variant = "full" }: Props) {
-  if (variant === "mark") {
+  const sizeClass = variant === "mark" ? "h-8 w-auto" : "h-12 w-auto";
+  const alt = "Bossman Construction Management";
+
+  if (variant === "onDark") {
     return (
-      <div
-        className={cn(
-          "inline-flex items-center justify-center rounded-sm bg-primary px-2 py-1 font-display text-sm font-bold tracking-widest text-primary-foreground",
-          className,
-        )}
-      >
-        BCM
-      </div>
+      <img src={darkLogo.url} alt={alt} className={cn(sizeClass, "object-contain", className)} />
     );
   }
+
   return (
-    <img
-      src={bcmLogoAsset.url}
-      alt="Bossman Construction Management"
-      className={cn("h-12 w-auto", className)}
-    />
+    <>
+      <img
+        src={lightLogo.url}
+        alt={alt}
+        className={cn(sizeClass, "object-contain dark:hidden", className)}
+      />
+      <img
+        src={darkLogo.url}
+        alt={alt}
+        className={cn(sizeClass, "hidden object-contain dark:block", className)}
+      />
+    </>
   );
 }

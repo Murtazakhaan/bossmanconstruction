@@ -33,6 +33,7 @@ import { Route as AuthenticatedSettingsAboutRouteImport } from './routes/_authen
 import { Route as AuthenticatedMaterialsIdRouteImport } from './routes/_authenticated/materials.$id'
 import { Route as AuthenticatedDonationsNewRouteImport } from './routes/_authenticated/donations.new'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
+import { Route as AuthenticatedAdminMaterialsRouteImport } from './routes/_authenticated/admin.materials'
 import { Route as AuthenticatedMaterialsIdEditRouteImport } from './routes/_authenticated/materials.$id.edit'
 
 const AuthRoute = AuthRouteImport.update({
@@ -167,6 +168,12 @@ const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminMaterialsRoute =
+  AuthenticatedAdminMaterialsRouteImport.update({
+    id: '/materials',
+    path: '/materials',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedMaterialsIdEditRoute =
   AuthenticatedMaterialsIdEditRouteImport.update({
     id: '/edit',
@@ -183,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/admin/materials': typeof AuthenticatedAdminMaterialsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
@@ -207,6 +215,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
+  '/admin/materials': typeof AuthenticatedAdminMaterialsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
@@ -235,6 +244,7 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/_authenticated/admin/materials': typeof AuthenticatedAdminMaterialsRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/donations/new': typeof AuthenticatedDonationsNewRoute
   '/_authenticated/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
@@ -263,6 +273,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reports'
     | '/settings'
+    | '/admin/materials'
     | '/admin/users'
     | '/donations/new'
     | '/materials/$id'
@@ -287,6 +298,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/reports'
+    | '/admin/materials'
     | '/admin/users'
     | '/donations/new'
     | '/materials/$id'
@@ -314,6 +326,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/reports'
     | '/_authenticated/settings'
+    | '/_authenticated/admin/materials'
     | '/_authenticated/admin/users'
     | '/_authenticated/donations/new'
     | '/_authenticated/materials/$id'
@@ -509,6 +522,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/materials': {
+      id: '/_authenticated/admin/materials'
+      path: '/materials'
+      fullPath: '/admin/materials'
+      preLoaderRoute: typeof AuthenticatedAdminMaterialsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/materials/$id/edit': {
       id: '/_authenticated/materials/$id/edit'
       path: '/edit'
@@ -520,11 +540,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminMaterialsRoute: typeof AuthenticatedAdminMaterialsRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminMaterialsRoute: AuthenticatedAdminMaterialsRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }

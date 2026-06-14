@@ -105,7 +105,7 @@ function EditMaterial() {
         actions={<Button variant="outline" asChild><Link to="/materials/$id" params={{ id }}>← Back</Link></Button>}
       />
       <Card className="max-w-3xl">
-        <CardContent className="p-6">
+        <CardContent className="p-4 sm:p-6">
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-1.5"><Label>Title</Label><Input required {...f("title")} /></div>
             <div className="space-y-1.5"><Label>Category</Label>
@@ -115,10 +115,10 @@ function EditMaterial() {
               </Select>
             </div>
             <div className="space-y-1.5"><Label>Description</Label><Textarea rows={3} {...f("description")} /></div>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1.5"><Label>Quantity</Label><Input type="number" min="0.01" step="0.01" required {...f("quantity")} /></div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="space-y-1.5"><Label>Quantity</Label><Input type="number" inputMode="decimal" min="0.01" step="0.01" required {...f("quantity")} /></div>
               <div className="space-y-1.5"><Label>Unit</Label><Input required {...f("unit")} /></div>
-              <div className="space-y-1.5"><Label>Value / unit (USD)</Label><Input type="number" min="0" step="0.01" required {...f("unit_value_usd")} /></div>
+              <div className="space-y-1.5 col-span-2 sm:col-span-1"><Label>Value / unit (USD)</Label><Input type="number" inputMode="decimal" min="0" step="0.01" required {...f("unit_value_usd")} /></div>
             </div>
             <div className="space-y-1.5"><Label>Status</Label>
               <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
@@ -133,10 +133,10 @@ function EditMaterial() {
               </Select>
             </div>
             <div className="space-y-1.5"><Label>Pickup address</Label><Input {...f("pickup_address")} /></div>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1.5"><Label>City</Label><Input {...f("pickup_city")} /></div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="space-y-1.5 col-span-2 sm:col-span-1"><Label>City</Label><Input {...f("pickup_city")} /></div>
               <div className="space-y-1.5"><Label>State</Label><Input {...f("pickup_state")} /></div>
-              <div className="space-y-1.5"><Label>ZIP</Label><Input {...f("pickup_zip")} /></div>
+              <div className="space-y-1.5"><Label>ZIP</Label><Input inputMode="numeric" {...f("pickup_zip")} /></div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5"><Label>Available from</Label><Input type="date" {...f("available_from")} /></div>
@@ -146,11 +146,11 @@ function EditMaterial() {
               <Label>Photos</Label>
               {user ? <MaterialPhotoUpload userId={user.id} value={photos} onChange={setPhotos} /> : null}
             </div>
-            <div className="flex justify-between gap-3 pt-2">
-              <Button type="button" variant="destructive" onClick={remove} disabled={deleting}>
+            <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between">
+              <Button type="button" variant="destructive" onClick={remove} disabled={deleting} className="w-full sm:w-auto">
                 {deleting ? "Deleting…" : "Delete donation"}
               </Button>
-              <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save changes"}</Button>
+              <Button type="submit" disabled={saving} className="w-full sm:w-auto">{saving ? "Saving…" : "Save changes"}</Button>
             </div>
           </form>
         </CardContent>

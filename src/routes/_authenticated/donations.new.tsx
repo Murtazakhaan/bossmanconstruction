@@ -63,7 +63,7 @@ function NewDonation() {
     <AppShell title="New donation">
       <PageHeader eyebrow="Contractor" title="Post a donation" description="Tell recipients what's available and when they can pick it up." />
       <Card className="max-w-3xl">
-        <CardContent className="p-6">
+        <CardContent className="p-4 sm:p-6">
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-1.5"><Label>Title</Label><Input required placeholder="e.g. 12 sheets of 1/2” drywall" {...f("title")} /></div>
             <div className="space-y-1.5"><Label>Category</Label>
@@ -73,16 +73,16 @@ function NewDonation() {
               </Select>
             </div>
             <div className="space-y-1.5"><Label>Description</Label><Textarea rows={3} {...f("description")} /></div>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1.5"><Label>Quantity</Label><Input type="number" min="0.01" step="0.01" required {...f("quantity")} /></div>
-              <div className="space-y-1.5"><Label>Unit</Label><Input required placeholder="sheets / lbs / sq ft" {...f("unit")} /></div>
-              <div className="space-y-1.5"><Label>Value / unit (USD)</Label><Input type="number" min="0" step="0.01" required {...f("unit_value_usd")} /></div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="space-y-1.5"><Label>Quantity</Label><Input type="number" inputMode="decimal" min="0.01" step="0.01" required {...f("quantity")} /></div>
+              <div className="space-y-1.5"><Label>Unit</Label><Input required placeholder="sheets / lbs" {...f("unit")} /></div>
+              <div className="space-y-1.5 col-span-2 sm:col-span-1"><Label>Value / unit (USD)</Label><Input type="number" inputMode="decimal" min="0" step="0.01" required {...f("unit_value_usd")} /></div>
             </div>
             <div className="space-y-1.5"><Label>Pickup address</Label><Input {...f("pickup_address")} /></div>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1.5"><Label>City</Label><Input {...f("pickup_city")} /></div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="space-y-1.5 col-span-2 sm:col-span-1"><Label>City</Label><Input {...f("pickup_city")} /></div>
               <div className="space-y-1.5"><Label>State</Label><Input {...f("pickup_state")} placeholder="TX" /></div>
-              <div className="space-y-1.5"><Label>ZIP</Label><Input {...f("pickup_zip")} /></div>
+              <div className="space-y-1.5"><Label>ZIP</Label><Input inputMode="numeric" {...f("pickup_zip")} /></div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5"><Label>Available from</Label><Input type="date" {...f("available_from")} /></div>
@@ -92,7 +92,7 @@ function NewDonation() {
               <Label>Photos</Label>
               {user ? <MaterialPhotoUpload userId={user.id} value={photos} onChange={setPhotos} /> : null}
             </div>
-            <Button type="submit" disabled={saving}>{saving ? "Posting…" : "Post donation"}</Button>
+            <Button type="submit" disabled={saving} className="w-full sm:w-auto">{saving ? "Posting…" : "Post donation"}</Button>
           </form>
         </CardContent>
       </Card>

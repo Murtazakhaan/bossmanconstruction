@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
@@ -37,20 +37,14 @@ function TransactionsList() {
           <CardContent className="p-0">
             <ul className="divide-y divide-border">
               {data.map((t: any) => (
-                <li key={t.id}>
-                  <Link
-                    to="/transactions/$id"
-                    params={{ id: t.id }}
-                    className="flex items-center justify-between px-6 py-4 hover:bg-accent/40"
-                  >
-                    <div>
-                      <div className="font-medium">{t.materials?.title ?? "Material"}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {Number(t.requested_quantity)} {t.materials?.unit} · {new Date(t.created_at).toLocaleString()}
-                      </div>
+                <li key={t.id} className="flex items-center justify-between px-6 py-4">
+                  <div>
+                    <div className="font-medium">{t.materials?.title ?? "Material"}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {Number(t.requested_quantity)} {t.materials?.unit} · {new Date(t.created_at).toLocaleString()}
                     </div>
-                    <StatusBadge status={t.status} />
-                  </Link>
+                  </div>
+                  <StatusBadge status={t.status} />
                 </li>
               ))}
             </ul>

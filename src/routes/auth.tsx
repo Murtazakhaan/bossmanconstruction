@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
-import { Loader2, ArrowLeft, Eye, EyeOff, HardHat, Home, CheckCircle2, Mail, Lock } from "lucide-react";
+import { Loader2, ArrowLeft, Eye, EyeOff, PackageOpen, HandHeart, CheckCircle2, Mail, Lock } from "lucide-react";
 
 const searchSchema = z.object({
   mode: z.enum(["signin", "signup"]).optional(),
@@ -239,8 +239,8 @@ function SignUpForm({ defaultRole, onSwitch }: { defaultRole: "contractor" | "re
   }
 
   const roleOptions = [
-    { v: "contractor" as const, label: "I'm a contractor", sub: "I have materials to donate", Icon: HardHat },
-    { v: "recipient" as const, label: "I need materials", sub: "Homeowner or nonprofit", Icon: Home },
+    { v: "contractor" as const, label: "Donate Materials", sub: "I have materials to donate", Icon: PackageOpen },
+    { v: "recipient" as const, label: "Receive Materials", sub: "Homeowner or nonprofit", Icon: HandHeart },
   ];
 
   return (

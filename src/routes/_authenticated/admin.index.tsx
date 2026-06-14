@@ -1,20 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Users, Package, ListChecks, Tag, ArrowRight, ShieldCheck } from "lucide-react";
+import { Users, Package, ListChecks, Tag, ArrowRight } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/status-badge";
 import { supabase } from "@/integrations/supabase/client";
-import { useCurrentUser } from "@/hooks/use-current-user";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
   component: AdminDashboard,
 });
 
 function AdminDashboard() {
-  const { user } = useCurrentUser();
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "dashboard"],
     queryFn: async () => {
@@ -47,16 +45,9 @@ function AdminDashboard() {
   return (
     <AdminShell title="Admin">
       <PageHeader
-        eyebrow="Administrator"
-        title={`Welcome back${user?.email ? ", " + user.email.split("@")[0] : ""}.`}
-        description="Here's a snapshot of program activity across BCM."
-        actions={
-          <Button asChild variant="outline">
-            <Link to="/admin/users">
-              <ShieldCheck className="mr-2 h-4 w-4" /> Manage users
-            </Link>
-          </Button>
-        }
+        eyebrow="Program management"
+        title="Admin dashboard"
+        description="Overview of program activity and quick access to management tools."
       />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

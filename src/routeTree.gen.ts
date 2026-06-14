@@ -24,8 +24,10 @@ import { Route as AuthenticatedDonationsIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedTransactionsIdRouteImport } from './routes/_authenticated/transactions.$id'
 import { Route as AuthenticatedSettingsSecurityRouteImport } from './routes/_authenticated/settings.security'
 import { Route as AuthenticatedSettingsFavoritesRouteImport } from './routes/_authenticated/settings.favorites'
+import { Route as AuthenticatedSettingsDeleteAccountRouteImport } from './routes/_authenticated/settings.delete-account'
 import { Route as AuthenticatedSettingsContactRouteImport } from './routes/_authenticated/settings.contact'
 import { Route as AuthenticatedSettingsChangePasswordRouteImport } from './routes/_authenticated/settings.change-password'
+import { Route as AuthenticatedSettingsAboutRouteImport } from './routes/_authenticated/settings.about'
 import { Route as AuthenticatedMaterialsIdRouteImport } from './routes/_authenticated/materials.$id'
 import { Route as AuthenticatedDonationsNewRouteImport } from './routes/_authenticated/donations.new'
 import { Route as AuthenticatedMaterialsIdEditRouteImport } from './routes/_authenticated/materials.$id.edit'
@@ -111,6 +113,12 @@ const AuthenticatedSettingsFavoritesRoute =
     path: '/favorites',
     getParentRoute: () => AuthenticatedSettingsRoute,
   } as any)
+const AuthenticatedSettingsDeleteAccountRoute =
+  AuthenticatedSettingsDeleteAccountRouteImport.update({
+    id: '/delete-account',
+    path: '/delete-account',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
 const AuthenticatedSettingsContactRoute =
   AuthenticatedSettingsContactRouteImport.update({
     id: '/contact',
@@ -121,6 +129,12 @@ const AuthenticatedSettingsChangePasswordRoute =
   AuthenticatedSettingsChangePasswordRouteImport.update({
     id: '/change-password',
     path: '/change-password',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+const AuthenticatedSettingsAboutRoute =
+  AuthenticatedSettingsAboutRouteImport.update({
+    id: '/about',
+    path: '/about',
     getParentRoute: () => AuthenticatedSettingsRoute,
   } as any)
 const AuthenticatedMaterialsIdRoute =
@@ -152,8 +166,10 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
+  '/settings/about': typeof AuthenticatedSettingsAboutRoute
   '/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/settings/contact': typeof AuthenticatedSettingsContactRoute
+  '/settings/delete-account': typeof AuthenticatedSettingsDeleteAccountRoute
   '/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
@@ -172,8 +188,10 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
+  '/settings/about': typeof AuthenticatedSettingsAboutRoute
   '/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/settings/contact': typeof AuthenticatedSettingsContactRoute
+  '/settings/delete-account': typeof AuthenticatedSettingsDeleteAccountRoute
   '/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
@@ -195,8 +213,10 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/_authenticated/donations/new': typeof AuthenticatedDonationsNewRoute
   '/_authenticated/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
+  '/_authenticated/settings/about': typeof AuthenticatedSettingsAboutRoute
   '/_authenticated/settings/change-password': typeof AuthenticatedSettingsChangePasswordRoute
   '/_authenticated/settings/contact': typeof AuthenticatedSettingsContactRoute
+  '/_authenticated/settings/delete-account': typeof AuthenticatedSettingsDeleteAccountRoute
   '/_authenticated/settings/favorites': typeof AuthenticatedSettingsFavoritesRoute
   '/_authenticated/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/_authenticated/transactions/$id': typeof AuthenticatedTransactionsIdRoute
@@ -218,8 +238,10 @@ export interface FileRouteTypes {
     | '/settings'
     | '/donations/new'
     | '/materials/$id'
+    | '/settings/about'
     | '/settings/change-password'
     | '/settings/contact'
+    | '/settings/delete-account'
     | '/settings/favorites'
     | '/settings/security'
     | '/transactions/$id'
@@ -238,8 +260,10 @@ export interface FileRouteTypes {
     | '/reports'
     | '/donations/new'
     | '/materials/$id'
+    | '/settings/about'
     | '/settings/change-password'
     | '/settings/contact'
+    | '/settings/delete-account'
     | '/settings/favorites'
     | '/settings/security'
     | '/transactions/$id'
@@ -260,8 +284,10 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/_authenticated/donations/new'
     | '/_authenticated/materials/$id'
+    | '/_authenticated/settings/about'
     | '/_authenticated/settings/change-password'
     | '/_authenticated/settings/contact'
+    | '/_authenticated/settings/delete-account'
     | '/_authenticated/settings/favorites'
     | '/_authenticated/settings/security'
     | '/_authenticated/transactions/$id'
@@ -385,6 +411,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsFavoritesRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
     }
+    '/_authenticated/settings/delete-account': {
+      id: '/_authenticated/settings/delete-account'
+      path: '/delete-account'
+      fullPath: '/settings/delete-account'
+      preLoaderRoute: typeof AuthenticatedSettingsDeleteAccountRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
     '/_authenticated/settings/contact': {
       id: '/_authenticated/settings/contact'
       path: '/contact'
@@ -397,6 +430,13 @@ declare module '@tanstack/react-router' {
       path: '/change-password'
       fullPath: '/settings/change-password'
       preLoaderRoute: typeof AuthenticatedSettingsChangePasswordRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
+    '/_authenticated/settings/about': {
+      id: '/_authenticated/settings/about'
+      path: '/about'
+      fullPath: '/settings/about'
+      preLoaderRoute: typeof AuthenticatedSettingsAboutRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
     }
     '/_authenticated/materials/$id': {
@@ -424,17 +464,22 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedSettingsRouteChildren {
+  AuthenticatedSettingsAboutRoute: typeof AuthenticatedSettingsAboutRoute
   AuthenticatedSettingsChangePasswordRoute: typeof AuthenticatedSettingsChangePasswordRoute
   AuthenticatedSettingsContactRoute: typeof AuthenticatedSettingsContactRoute
+  AuthenticatedSettingsDeleteAccountRoute: typeof AuthenticatedSettingsDeleteAccountRoute
   AuthenticatedSettingsFavoritesRoute: typeof AuthenticatedSettingsFavoritesRoute
   AuthenticatedSettingsSecurityRoute: typeof AuthenticatedSettingsSecurityRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
 }
 
 const AuthenticatedSettingsRouteChildren: AuthenticatedSettingsRouteChildren = {
+  AuthenticatedSettingsAboutRoute: AuthenticatedSettingsAboutRoute,
   AuthenticatedSettingsChangePasswordRoute:
     AuthenticatedSettingsChangePasswordRoute,
   AuthenticatedSettingsContactRoute: AuthenticatedSettingsContactRoute,
+  AuthenticatedSettingsDeleteAccountRoute:
+    AuthenticatedSettingsDeleteAccountRoute,
   AuthenticatedSettingsFavoritesRoute: AuthenticatedSettingsFavoritesRoute,
   AuthenticatedSettingsSecurityRoute: AuthenticatedSettingsSecurityRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
@@ -498,3 +543,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

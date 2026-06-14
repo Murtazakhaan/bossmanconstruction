@@ -6,7 +6,6 @@ import {
   ListChecks,
   FileBarChart,
   Settings as SettingsIcon,
-  ShieldCheck,
   Users as UsersIcon,
   Tag,
   LogOut,
@@ -40,7 +39,7 @@ const USER_ITEMS: Item[] = [
 ];
 
 const ADMIN_ITEMS: Item[] = [
-  { to: "/admin", label: "Dashboard", icon: ShieldCheck },
+  { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { to: "/admin/users", label: "Users", icon: UsersIcon },
   { to: "/admin/materials", label: "Materials", icon: Package },
   { to: "/admin/transactions", label: "Transactions", icon: ListChecks },

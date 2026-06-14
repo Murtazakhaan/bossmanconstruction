@@ -32,6 +32,7 @@ import { Route as AuthenticatedSettingsChangePasswordRouteImport } from './route
 import { Route as AuthenticatedSettingsAboutRouteImport } from './routes/_authenticated/settings.about'
 import { Route as AuthenticatedMaterialsIdRouteImport } from './routes/_authenticated/materials.$id'
 import { Route as AuthenticatedDonationsNewRouteImport } from './routes/_authenticated/donations.new'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedMaterialsIdEditRouteImport } from './routes/_authenticated/materials.$id.edit'
 
 const AuthRoute = AuthRouteImport.update({
@@ -161,6 +162,11 @@ const AuthenticatedDonationsNewRoute =
     path: '/donations/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedMaterialsIdEditRoute =
   AuthenticatedMaterialsIdEditRouteImport.update({
     id: '/edit',
@@ -177,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/settings/about': typeof AuthenticatedSettingsAboutRoute
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/donations/new': typeof AuthenticatedDonationsNewRoute
   '/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/settings/about': typeof AuthenticatedSettingsAboutRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/donations/new': typeof AuthenticatedDonationsNewRoute
   '/_authenticated/materials/$id': typeof AuthenticatedMaterialsIdRouteWithChildren
   '/_authenticated/settings/about': typeof AuthenticatedSettingsAboutRoute
@@ -254,6 +263,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reports'
     | '/settings'
+    | '/admin/users'
     | '/donations/new'
     | '/materials/$id'
     | '/settings/about'
@@ -277,6 +287,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/reports'
+    | '/admin/users'
     | '/donations/new'
     | '/materials/$id'
     | '/settings/about'
@@ -303,6 +314,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/reports'
     | '/_authenticated/settings'
+    | '/_authenticated/admin/users'
     | '/_authenticated/donations/new'
     | '/_authenticated/materials/$id'
     | '/_authenticated/settings/about'
@@ -490,6 +502,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDonationsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/materials/$id/edit': {
       id: '/_authenticated/materials/$id/edit'
       path: '/edit'
@@ -501,10 +520,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 

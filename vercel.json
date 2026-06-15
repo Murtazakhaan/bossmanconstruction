@@ -1,0 +1,8 @@
+{
+  "framework": "tanstack-start",
+  "buildCommand": "bun run build",
+  "outputDirectory": ".output",
+  "installCommand": "bun install",
+  "devCommand": "bun run dev",
+  "regions": ["iad1"]
+}

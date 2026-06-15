@@ -39,12 +39,13 @@ function SettingsIndex() {
 
   useEffect(() => {
     if (!user) return;
-    supabase
-      .from("profiles")
-      .select("full_name, org_name, phone")
-      .eq("id", user.id)
-      .maybeSingle()
-      .then(({ data }) => setProfile(data ?? {}));
+    (async () => {
+      const [p, c] = await Promise.all([
+        supabase.from("profiles").select("full_name, org_name").eq("id", user.id).maybeSingle(),
+        supabase.from("profile_contacts").select("phone").eq("id", user.id).maybeSingle(),
+      ]);
+      setProfile({ ...(p.data ?? {}), phone: c.data?.phone ?? null });
+    })();
   }, [user]);
 
   async function signOut() {

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
 import { Loader2, ArrowLeft, Eye, EyeOff, PackageOpen, HandHeart, CheckCircle2, Mail, Lock } from "lucide-react";
 
@@ -89,14 +88,17 @@ function GoogleSignInButton() {
   const [loading, setLoading] = useState(false);
   async function go() {
     setLoading(true);
-    const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/dashboard" });
-    if (r.error) {
-      toast.error(r.error.message ?? "Google sign-in failed");
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin + "/dashboard",
+      },
+    });
+    if (error) {
+      toast.error(error.message ?? "Google sign-in failed");
       setLoading(false);
       return;
     }
-    if (r.redirected) return;
-    window.location.href = "/dashboard";
   }
   return (
     <button

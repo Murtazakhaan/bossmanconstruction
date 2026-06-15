@@ -25,17 +25,33 @@ function ProfilePage() {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("*").eq("id", user.id).maybeSingle().then(({ data }) => {
-      setP(data ?? { id: user.id });
-    });
+    (async () => {
+      const [prof, contact] = await Promise.all([
+        supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+        supabase.from("profile_contacts").select("*").eq("id", user.id).maybeSingle(),
+      ]);
+      setP({ id: user.id, ...(prof.data ?? {}), ...(contact.data ?? {}) });
+    })();
   }, [user]);
 
   async function save() {
     if (!user) return;
     setSaving(true);
-    const { error } = await supabase.from("profiles").upsert({ ...p, id: user.id });
+    const { phone, address_line, city, state, zip, ...profileFields } = p;
+    const [r1, r2] = await Promise.all([
+      supabase.from("profiles").upsert({ ...profileFields, id: user.id }),
+      supabase.from("profile_contacts").upsert({
+        id: user.id,
+        phone: phone ?? null,
+        address_line: address_line ?? null,
+        city: city ?? null,
+        state: state ?? null,
+        zip: zip ?? null,
+      }),
+    ]);
     setSaving(false);
-    if (error) toast.error(error.message);
+    const err = r1.error ?? r2.error;
+    if (err) toast.error(err.message);
     else toast.success("Profile saved");
   }
 

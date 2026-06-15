@@ -28,15 +28,19 @@ function UsersPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "users"],
     queryFn: async () => {
-      const [{ data: profiles, error: e1 }, { data: roles, error: e2 }] = await Promise.all([
-        supabase.from("profiles").select("id, full_name, org_name, phone, created_at").order("created_at", { ascending: false }),
+      const [{ data: profiles, error: e1 }, { data: roles, error: e2 }, { data: contacts, error: e3 }] = await Promise.all([
+        supabase.from("profiles").select("id, full_name, org_name, created_at").order("created_at", { ascending: false }),
         supabase.from("user_roles").select("user_id, role"),
+        supabase.from("profile_contacts").select("id, phone"),
       ]);
       if (e1) throw e1;
       if (e2) throw e2;
+      if (e3) throw e3;
       const roleMap = new Map<string, AppRole>();
       (roles ?? []).forEach((r: any) => roleMap.set(r.user_id, r.role));
-      return (profiles ?? []).map((p: any) => ({ ...p, role: roleMap.get(p.id) ?? null }));
+      const phoneMap = new Map<string, string | null>();
+      (contacts ?? []).forEach((c: any) => phoneMap.set(c.id, c.phone ?? null));
+      return (profiles ?? []).map((p: any) => ({ ...p, phone: phoneMap.get(p.id) ?? null, role: roleMap.get(p.id) ?? null }));
     },
   });
 

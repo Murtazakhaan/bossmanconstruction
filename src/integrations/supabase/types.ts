@@ -174,57 +174,90 @@ export type Database = {
         }
         Relationships: []
       }
-      profiles: {
+      profile_contacts: {
         Row: {
           address_line: string | null
-          bio: string | null
           city: string | null
           created_at: string
-          donor_type: string | null
-          donor_type_other: string | null
-          full_name: string | null
           id: string
-          org_name: string | null
           phone: string | null
-          recipient_type: string | null
-          recipient_type_other: string | null
           state: string | null
           updated_at: string
           zip: string | null
         }
         Insert: {
           address_line?: string | null
-          bio?: string | null
           city?: string | null
           created_at?: string
-          donor_type?: string | null
-          donor_type_other?: string | null
-          full_name?: string | null
           id: string
-          org_name?: string | null
           phone?: string | null
-          recipient_type?: string | null
-          recipient_type_other?: string | null
           state?: string | null
           updated_at?: string
           zip?: string | null
         }
         Update: {
           address_line?: string | null
-          bio?: string | null
           city?: string | null
+          created_at?: string
+          id?: string
+          phone?: string | null
+          state?: string | null
+          updated_at?: string
+          zip?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_contacts_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profile_contacts_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          bio: string | null
+          created_at: string
+          donor_type: string | null
+          donor_type_other: string | null
+          full_name: string | null
+          id: string
+          org_name: string | null
+          recipient_type: string | null
+          recipient_type_other: string | null
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          donor_type?: string | null
+          donor_type_other?: string | null
+          full_name?: string | null
+          id: string
+          org_name?: string | null
+          recipient_type?: string | null
+          recipient_type_other?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
           created_at?: string
           donor_type?: string | null
           donor_type_other?: string | null
           full_name?: string | null
           id?: string
           org_name?: string | null
-          phone?: string | null
           recipient_type?: string | null
           recipient_type_other?: string | null
-          state?: string | null
           updated_at?: string
-          zip?: string | null
         }
         Relationships: []
       }
